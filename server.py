@@ -367,6 +367,12 @@ def list_users():
     return render_template("users_list.html", users=users, logged_in=True)
 
 
+@app.route("/user/<user_id>")
+def user_profile_page(user_id):
+    users = data_manager.read_user_info()
+    return render_template("profile_page.html", id=int(user_id), users=users)
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,  # Allow verbose error reports
