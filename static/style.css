@@ -53,10 +53,10 @@ a:hover{
 	color: rgb(0, 0, 0);
 }
 .bg{
-	background-image: url("bg_test_2.jpg");
+	/*background-image: url("bg_test_2.jpg");
 	background-repeat:no-repeat;
-	background-size:cover;
-	/*background-color: lightgrey;*/
+	background-size:cover;*/
+	background-color: lightgrey
 }
 	
 
