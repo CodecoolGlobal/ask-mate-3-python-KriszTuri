@@ -350,13 +350,20 @@ def add_new_tag(id):
 
 @app.route("/registration", methods=["POST", "GET"])
 def registration():
+    users = data_manager.read_user_info()
+    message = ""
     if request.method == "POST":
         username = request.form["new_user"]
-        email = request.form["new_email"]
+        email = request.form["new_email"] 
         pw = request.form["new_user_pw"]
-        save_user(username,email,pw)
-        return redirect("/")
-    return render_template("reg.html")
+        username_list = [username[1] for username in users]
+        print(username_list)
+        if username not in username_list or not username_list:
+            message = "Registration successful!"
+            save_user(username,email,pw)
+        else:
+            message = "Username or email already taken!"
+    return render_template("reg.html", message = message)
 
 
 @app.route("/login")

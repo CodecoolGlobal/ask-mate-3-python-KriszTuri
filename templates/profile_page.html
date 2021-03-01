@@ -1,18 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg_other">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>User Profile Page</title>
-<style>
-    .content{
-        text-align: center;
-    }
-    .tables{
-        margin-left: auto;
-  margin-right: auto;
-    }
-</style>
 </head>
 <body>
            <table class="site_header">
@@ -40,7 +31,7 @@
             </tr>
         </table>
            <hr>
-           <div class="content">
+           <div class="center">
            <br>
             <h3>User Profile Details</h3>
             <br>
@@ -59,7 +50,7 @@
                <br>
         <hr>
         <br>
-<table class="tables">
+<table class="center">
     <tr>
         <th>Q Title</th>
         <th>Question</th>
@@ -73,7 +64,7 @@
             {% endfor %}
         </tr>
 </table>
-           <table class="tables">
+           <table class="center">
     <tr>
     <br>
         <hr>
