@@ -9,6 +9,7 @@ from data_manager import view_num_add, delete_question, save_answers, delete_ans
 from data_manager import get_search_que, get_tags, give_tag, delete_tag_
 from data_manager import get_search_ans, save_answers, get_all_comment
 from data_manager import save_comm_ans, save_comm_que
+from data_manager import save_user
 import os
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
@@ -343,8 +344,14 @@ def add_new_tag(id):
     return(redirect(f"/edit_question/{id}"))
 
 
-@app.route("/registration")
+@app.route("/registration", methods=["POST", "GET"])
 def registration():
+    if request.method == "POST":
+        username = request.form["new_user"]
+        email = request.form["new_email"]
+        pw = request.form["new_user_pw"]
+        save_user(username,email,pw)
+        return redirect("/")
     return render_template("reg.html")
 
 @app.route("/login")

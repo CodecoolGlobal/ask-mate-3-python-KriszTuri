@@ -34,26 +34,26 @@
             <td><h1>Registration page</h1></td>
         </tr>
         <tr>
-
             <td>
-                username
-            </td>
-            <td>
-                password
+                username:
+                <form action="/registration" method="POST"> 
+                    <input type="text" id="new_user" name="new_user">
             </td>
         </tr>
         <tr>
             <td>
+                email:
                 <form> 
-                    <input type="text" id="new_user" name="new_user">
+                    <input type="text" id="new_email" name="new_email">
             </td>
-
+        </tr>
+        <tr>
+        
             <td>
+                password:
+                <input type="password" id="new_user_pw" name="new_user_pw">
 
-                    <input type="password" id="new_user_pw" name="new_user_pw">
-            </td>
-            <td>
-                    <input type="submit" value="sign up">
+                <input type="submit" value="sign up">
                 </form>
             </td>
 
