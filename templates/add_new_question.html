@@ -42,6 +42,7 @@
         <h3>Subject</h3>
         <form action="{{ url_for('submit') }}" method="post">
             <textarea id="n_q_inpsub" name="subject" aria-label="[class]="  rows="1" cols="50"></textarea>
+            <input type="hidden" name="user_id" value="{{ user_id }}">
         <br>
         <h3>Enter your Question here:</h3>
             <textarea id="n_q_inpqu" name="new_question" aria-label="[class]=" rows="4" cols="60"></textarea>

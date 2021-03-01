@@ -96,9 +96,9 @@ def list_last_5():
 
 def save_question(line):
     cursor = get_alonescursor()
-    cursor.execute(
-        "INSERT INTO questions (id, view_number, vote_number, title, message_, image_name) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s);",
-        {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3])})
+    cursor.execute("UPDATE users_info SET question_count = question + 1 WHERE id = %(id)s ", {"id": line[4]})
+    cursor.execute("INSERT INTO questions (id, view_number, vote_number, title, message_, image_name, user_id) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s, %(user_id)s);", {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3])}, "user_id": line[4])
+
 
 
 def delete_question(index):

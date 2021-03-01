@@ -99,9 +99,9 @@ def sort_list():
         return redirect("/list")
 
 
-@app.route("/add-question", methods=["GET"])
-def new_question_page_render():
-    return render_template("add_new_question.html")
+@app.route("/add-question/< user_id >", methods=["GET"])
+def new_question_page_render(user_id):
+    return render_template("add_new_question.html", user_id)
 
 
 @app.route("/like")
@@ -147,6 +147,7 @@ def submit():
     new_question.append(format(request.form['subject']))
     new_question.append(format(request.form['new_question']))
     new_question.append(str(new_id))
+    new_question.append(format(request.form['user_id']))
     tag = format(request.form['tag'])
     tags = get_tags()
     tag_id = []
