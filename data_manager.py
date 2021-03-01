@@ -187,7 +187,6 @@ def save_comm_ans(id, title, answer_id):
     cursor.execute("INSERT INTO comments_answers (id, title, answer_id) VALUES (%(id)s,%(title)s,%(answer_id)s);",
                    {"id": id, "title": title, "answer_id": answer_id})
 
-
 def del_com(id, filename):
     cursor = get_alonescursor()
     cursor.execute("DELETE FROM %(filename)s WHERE id = %(id)s", {"filename": AsIs(filename), "id": id})
@@ -198,15 +197,14 @@ def update_com_qu(id, filename, title):
     cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE question_id = %(id)s",
                    {"filename": AsIs(filename), "id": id, "title": title})
 
-
 def update_com_an(id, filename, title):
     cursor = get_alonescursor()
     cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s", {"filename":AsIs(filename), "id": id, "title": title})
 
+
 def save_user(username, email, pw):
     cursor = get_alonescursor()
     cursor.execute('INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);', {'username':username, 'email':email, 'pw':pw})
-
 
 
 def read_user_info():

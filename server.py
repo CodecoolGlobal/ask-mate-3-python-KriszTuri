@@ -10,6 +10,7 @@ from data_manager import get_search_que, get_tags, give_tag, delete_tag_
 from data_manager import get_search_ans, save_answers, get_all_comment
 from data_manager import save_comm_ans, save_comm_que
 from data_manager import save_user
+import data_manager
 import os
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
