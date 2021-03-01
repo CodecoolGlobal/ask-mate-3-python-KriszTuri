@@ -201,15 +201,12 @@ def update_com_qu(id, filename, title):
 
 def update_com_an(id, filename, title):
     cursor = get_alonescursor()
-<<<<<<< HEAD
     cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s", {"filename":AsIs(filename), "id": id, "title": title})
 
 def save_user(username, email, pw):
     cursor = get_alonescursor()
     cursor.execute('INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);', {'username':username, 'email':email, 'pw':pw})
-=======
-    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s",
-                   {"filename": AsIs(filename), "id": id, "title": title})
+
 
 
 def read_user_info():
@@ -217,4 +214,3 @@ def read_user_info():
     cursor.execute("SELECT * FROM users_info ")
     result = cursor.fetchall()
     return result
->>>>>>> 810ff98611533dd5fad75fe1449f6f73f1f0b6ed
