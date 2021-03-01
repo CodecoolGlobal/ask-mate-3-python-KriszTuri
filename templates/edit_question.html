@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="UTF-8">
+        <title>Edit Question</title>
+        <style>
+            body {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body class="bg">
+
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                    </form>  
+                </td>
+            </tr>
+        </table>
+        <h1>You can edit your question here:</h1>
+            <h2>Here you can send your modified question:</h2>
+            <br><br>
+            <h3>Modified subject</h3>
+            <form action="{{ url_for('edit_que', index_of_que=id) }}" method="post">
+                <textarea class="edit_question_box" name="subject" aria-label="[class]="  rows="1" cols="50">{{question[0][4]}}</textarea>
+            <br>
+            <h3>Enter your Question here:</h3>
+                <textarea class="edit_question_box"  name="new_question" aria-label="[class]=" rows="4" cols="60">{{question[0][5]}}</textarea>
+        
+                    <input class="send" type="submit" value="Send" id="send_button">
+            </form>
+            <br>
+        <form action="{{url_for('add_new_tag', id=id)}}" method="POST">
+            <h3>Add your new tag</h3>
+            <br><input id="tag" name="tag" maxlength="8" type="text" ><br>
+            <input class="send"  type="submit" value="New tag" id="send_tag">
+        </form>
+    </body>
+</html>

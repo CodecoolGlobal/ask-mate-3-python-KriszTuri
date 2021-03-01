@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="utf-8">
+        <title>Add New Answer</title>
+        
+    </head>
+    <body class="bg">
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a>Contact Us</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                    </form>  
+                </td>
+            </tr>
+        </table>
+        
+        <br>
+        <p>This is the page where you can add a new answer.</p>
+        <br>
+        <p><i>Enter your answer here:</i></p>
+        <form action="{{url_for('add_new_answer', question_id=question_id)}}" method="POST" >
+            <textarea class="new_answer_box" name="new_answer" aria-label="[class]=" rows="4" cols="60"></textarea>
+                <input type="submit" value="Send" class="send">
+        </form>
+
+
+            <!--<button type="button"<p>Send</p></button>-->
+        <br><br><br><br><br><br>
+        <hr>
+    </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Question Details</title>
+    </head>
+    <body class="bg">
+<table class="site_header">
+    <tr class="site_header_menu">
+        <td>
+            <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+        </td>
+        <td>
+            <b><a href="/about">About</a></b>
+        </td>
+        <td>
+            <b><a href="/list">Questions</a></b>
+        </td>
+        <td>
+            <b><a href="/contact">Contact Us</a></b>
+        </td>
+        <td>
+            <form action="/like">
+                <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+            </form>  
+        </td>
+    </tr>
+</table>
+<br><br>
+
+    {%for item in question%}
+            <!--edit, delete-->
+            <table style="width: 3cm;">
+                <tr>
+                    <td>
+                        <form action="/edit_question/{{ id }}" method="POST">
+                            <input type="submit" class="upvote" name="edit" value="Edit">
+                        </form>
+ 
+                    </td>
+                    <td>
+                        <form action="/delete_que/{{ id }}">
+                            <input type="submit" class="downvote" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        <!--question, views, votes-->
+        <table style="width: 100%;">
+                <tr>
+                    <th>
+                        <!--question-->
+                        <h1><p>{{item[4]}}</p></h1>
+                    </th>
+
+                </tr>
+                <tr>
+                    <td>
+                        <p>Views: {{item[2]}} Votes: {{3}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <!--question details-->
+                    <td style="text-align: center;">
+                        <p>{{item[5]}}</p>
+                    </td>
+                </tr>
+        </table>
+        <br>
+        <br>
+        <table style="width: 90%;" class="answers_to_question">
+                <tr>
+                    <td>
+                        <p><u>Answers:</u></p>
+                        <form action="{{url_for('new_answer', question_id=id)}}" method="POST">
+                            <button type="submit" class = "upvote" name="New answer">Send Answer</button>
+                        </form>
+                        {%for item in answers%}
+    
+
+                    </td>
+                </tr>
+        </table>
+            <!--answers-->
+            <table style="width: 90%;" class="answers_to_question">
+                <tr>
+                    <td><br>
+                        <form action="{{ url_for('vote_answer',  answer_id=item[0], question_id=item[3]) }}"  method="POST">
+                            <input type="text" name="up" value="up" hidden>
+                            <button type="submit" class="upvote">▲</button>
+                        </form>
+                        <form action="{{ url_for('vote_answer', answer_id=item[0], question_id=item[3]) }}" method="POST">
+                            <input type="text" name="down" value="down" hidden>
+                            <button type="submit" name="down" class="downvote">▼</button>
+                        </form>
+                        <p>votes: {{item[2]}}</p>
+                    </td>
+                    <td>                
+                        <p>{{item[4]}}</p>
+                        
+                    </td>
+                    <td>
+                        <p>Anonymus ({{item[1]}})</p>
+                    </td>
+
+                    <td>
+                        <!--delete answer-->
+                        <form action="{{ url_for('answerdelete', answer_id=item[0], index_of_que=item[3]) }}" method="POST">
+                            <button type="submit" class = "downvote">Delete Answer</button>
+                        </form>                          
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 50%;" class="answer_comments">
+               
+                <tr>
+                    
+                    <td>
+                        Replies on answer:<br>
+                        <form action="/new_comment_answer/{{ id }}" method="GET"><input type="submit" class="upvote" value="Reply to answer"></form>
+                        {% for item2 in answer_comments %}
+                            {% if item2[1] == item[0] %}
+                            <a href="{{url_for('edit_comment_answer', id=item2[0])}}"><p>&#x270E;</a> {{item2[2]}}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+            <br>
+
+    {% endfor %}
+    <!-- First answer which has a most like(sry for my english)-->
+    <table style="width: 100%;">
+        <tr>
+            <th style="text-align: left;">
+                Comments on this post:
+            </th>
+        </tr>
+        <tr>
+
+
+                
+                {% for item2 in question_comments %}
+                {% if item2[2] == item[0] %}
+                <tr>
+                    <td> 
+                        <a href="{{url_for('edit_comment_question', id=item2[0])}}"><p>&#x270E;</a> {{item2[1]}}</p>
+                    </td>
+                </tr>
+
+                {% endif %}
+            {% endfor %}
+            <br>
+            <tr>
+                <td>
+                    <i><p>Have something to say?</p></i> <form action="/new_comment_question/{{ id }}" method="GET"><input type="submit" class="send" value="Add comment"></form>
+                </td>
+            </tr>
+            
+            
+
+        </tr>
+    </table>
+        {%endfor%}
+    </body>
+</html>

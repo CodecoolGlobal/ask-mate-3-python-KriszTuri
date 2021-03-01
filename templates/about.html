@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="utf-8">
+        <title>Ask Mate</title>
+
+    </head>
+
+    </form>
+    <body class="bg">
+
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/">Main Page</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                    </form>  
+                </td>
+            </tr>
+        </table>
+        <br>
+        <br>
+
+        <p><strong>AskMate</strong> is a question and answer site for professional and enthusiast programmers. It is a privately held website created in 2021 by ACF-Team™®©. It features questions and answers on a wide range of topics in computer programming.</p>
+        <p>It was created to be a more open alternative to earlier question and answer sites such as Experts-Exchange. The website serves as a platform for users to ask and answer questions, and, through membership and active participation, to vote questions and answers up or down and edit questions and answers in a fashion similar to a wiki or Reddit.</p>
+        <br>
+        <p><b><i>Meet the ACF-Team:</i></b></p>
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <img src="static/stock1.jpg" width="250">
+                </td>
+                <td>
+                    <img src="static/stock2.jpg " width="250">
+                </td>
+                <td>
+                    <img src="static/stock3.jpg" width="250">
+                </td>
+                <td>
+                    <img src="static/stock4.jpg" width="250">
+                </td>
+            </tr>
+            <tr>
+                <td><b>Roland Pelyhe</b> <br> back-end developer</td>
+                <td><b>Balázs Kedves</b> <br> front-end developer</td>
+                <td><b>Beatrix Szabó</b> <br> back-end developer</td>
+                <td><b>Krisztina Turi</b> <br> front-end developer</td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-size: xx-small;">note: not all pictures represent the person themself</p>
+                </td>
+                
+            </tr>
+        </table>
+        <br>
+        <p>Sponsored sites:</p>
+            <ul>
+            <li><a href="https://stackoverflow.com/">Stack Overflow</a></li>
+                <li><a href="https://www.geeksforgeeks.org/">Geeks for Geeks</a></li>
+            </ul>
+    
+    </body>
+</html>

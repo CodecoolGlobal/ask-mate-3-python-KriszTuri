@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="utf-8">
+        <title>Search Result</title>
+
+    </head>
+
+    </form>
+    <body class ="bg">            
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a>Contact Us</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                    </form>  
+                </td>
+        </table>
+        <i><p class="motto">AskMate: <br> where no question's left unanswered . . .</p></i>
+        <table style="width: 100%;">
+            <tr>
+                <td><p><u>Search result for {{userinput}}:</u></p></td>
+            </tr>
+            
+            {% for i in questions %}
+            <th>Submission time</th>
+            <th>Views</th>
+            <th>Likes</th>
+            <th>Title</th>
+            <th>Details</th>
+            <th>Image</th>
+            <tr>
+                {% for j in range( i | length) %}
+                        {% if j == 4 or j == 5 %}
+                        <td><p>{{ i[j] | replace(userinput, '<mark>'+userinput+'</mark>') | safe }}</p></td>
+                        {% elif j == 6 %}
+                        <td><img src="static/Picture/questions_pics/{{ j[0] }}.jpeg" onerror="this.style.display='none'" style="width: 50px;" ></td>
+                        {% elif j != 0 %}
+                        <td><p>{{ i[j] }}</p></td>
+                        {% endif %}
+
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for ans in answers %}
+
+                    {% if ans[3] == i[0] %}
+                        {% for i in ans %}
+
+                        <td><p>{{ i }}</p></td>
+                        
+                        <!--EZT ITT MAJD EL KÉNE TOLNI-->
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

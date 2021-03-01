@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <meta charset="UTF-8">
+    <title>Contact</title>
+</head>
+<body class="bg">
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/">Main Page</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>
+                    </form>
+                        <b>{{ likes }}</b>
+                </td>
+            </tr>
+        </table>
+    <b><p>Contact</p></b>
+        <br>
+        <hr>
+        <br>
+        <b><p>Address:</p></b>
+        <p><i>719 Mayflower Road<br>
+              North Pole, NJ 07093</i></p>
+        <br>
+        <p><b>E-mail:</b></p>
+        <p><i>afcteam@nomail.com</i></p>
+        <p><i><img src="{{url_for('static', filename='gmail_logo.png')}}" width="40" height="Auto" alt="Gmail"><a id="send_e-mail" href="https://mail.google.com">send an e-mail to us</a></i></p>
+
+        <br>
+        <p><b>Facebook:</b></p>
+        <p>We don't have Facebook, We don't sell our data!</p>
+
+
+</body>
+</html>

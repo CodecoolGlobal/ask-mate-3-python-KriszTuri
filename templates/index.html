@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="utf-8">
+        <title>Ask Mate</title>
+
+    </head>
+
+    </form>
+    <body class ="bg">            
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                    </form>  
+                </td>
+            </tr>
+        </table>
+        <i><p class="motto">AskMate: <br> where no question's left unanswered . . .</p></i>
+        <table style="width: 3cm;">
+            <tr>
+                <td>
+                    <div class="search_icon">&#x1F50D;</div>
+                </td>
+                    <form action="/search" method="GET">
+                        <td>
+                            <input name="userinput" id="userinput" style="font-size: 14pt; height: 20px; width:120px;" type="text" required>
+                        </td>
+                        <td>
+                            <input id="search_send" class="send" type="submit" value="Search">
+                        </td>
+                        
+                    </form>
+            </tr>
+
+        </table>
+        <table style="width: 100%;">
+            <tr>
+                <th><p><u>Latest questions:</u></p></th>
+            </tr>
+            <tr style="text-align: center;">
+                <td>
+                    {% for question in list %}
+                        <a href="/question/{{question[0]}}"><p>{{question[4]}}</p></a>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
