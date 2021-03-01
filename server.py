@@ -354,9 +354,16 @@ def registration():
         return redirect("/")
     return render_template("reg.html")
 
+
 @app.route("/login")
 def login():
     return render_template("login.html")
+
+
+@app.route("/users")
+def list_users():
+    users = data_manager.read_user_info()
+    return render_template("users_list.html", users=users, logged_in=True)
 
 
 if __name__ == "__main__":

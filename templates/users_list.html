@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+</head>
+<body>
+      <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <b><a href="/users">Users List</a></b>
+                </td>
+            </tr>
+      </table>
+                  <hr>
+          <br>
+        {% if not logged_in %}
+        <p>You have no permission, please log in!</p>
+      {% elif logged_in %}
+            <table>
+            <tr>
+                <th>
+                    username
+                </th>
+                   <th>
+                    Registration Date
+                </th>
+                   <th>
+                    Asked Questions
+                </th>
+                   <th>
+                    Count of Answers
+                </th>
+                   <th>
+                    Count of Comments
+                </th>
+                   <th>
+                    Reputation
+                </th>
+            </tr>
+        <tr>
+            {% for data in users %}
+                    <td>
+                    {{ data[1] }}
+                     <td>
+                    {{ data[5] }}
+                    </td>
+                   <td>
+                    {{ data[6] }}
+                    </td>
+                   <td>
+                    {{ data[7] }}
+                    </td>
+                   <td>
+                    {{ data[8] }}
+                    </td>
+                   <td>
+                    {{ data[4] }}
+                    </td>
+                {% endfor %}
+        </tr>
+
+                </table>
+        {% endif %}
+
+
+</body>
+</html>
+

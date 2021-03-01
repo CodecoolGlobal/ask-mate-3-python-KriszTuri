@@ -2,6 +2,7 @@ import os
 import psycopg2
 from psycopg2.extensions import AsIs
 
+
 def user():
     lineuser = []
     with open("user.txt", "r") as user_db:
@@ -18,7 +19,8 @@ def get_alonescursor():
 
 def get_all(sorted, sort):
     cursor = get_alonescursor()
-    cursor.execute("SELECT * FROM questions ORDER BY %(sorted)s %(sort)s;", {'sorted': AsIs(sorted), 'sort': AsIs(sort)})
+    cursor.execute("SELECT * FROM questions ORDER BY %(sorted)s %(sort)s;",
+                   {'sorted': AsIs(sorted), 'sort': AsIs(sort)})
     result = cursor.fetchall()
     return result
 
@@ -39,12 +41,14 @@ def get_que(id):
 
 def vote_update_plus(id, table_name):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE %(table_name)s SET vote_number = vote_number + 1 WHERE id = %(id)s", {"table_name": AsIs(table_name), "id": id})
+    cursor.execute("UPDATE %(table_name)s SET vote_number = vote_number + 1 WHERE id = %(id)s",
+                   {"table_name": AsIs(table_name), "id": id})
 
 
 def vote_update_minus(id, table_name):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE %(table_name)s SET vote_number = vote_number - 1 WHERE id = %(id)s", {"table_name": AsIs(table_name), "id": id})
+    cursor.execute("UPDATE %(table_name)s SET vote_number = vote_number - 1 WHERE id = %(id)s",
+                   {"table_name": AsIs(table_name), "id": id})
 
 
 ''' Read and Write CSV files'''
@@ -92,7 +96,9 @@ def list_last_5():
 
 def save_question(line):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO questions (id, view_number, vote_number, title, message_, image_name) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s);", {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3])})
+    cursor.execute(
+        "INSERT INTO questions (id, view_number, vote_number, title, message_, image_name) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s);",
+        {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3])})
 
 
 def delete_question(index):
@@ -103,7 +109,8 @@ def delete_question(index):
 
 def update_que(id, update_list):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE questions SET title = %(title)s, message_ = %(message)s WHERE id = %(id)s", {"title": update_list[0], "message": update_list[1], "id": id})
+    cursor.execute("UPDATE questions SET title = %(title)s, message_ = %(message)s WHERE id = %(id)s",
+                   {"title": update_list[0], "message": update_list[1], "id": id})
 
 
 def view_num_add(id):
@@ -132,17 +139,22 @@ def get_search_ans(search):
 
 def save_answers(line):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO answers (id, sub_time, vote_number, question_id, message_, image_name) VALUES (%(id)s, %(submission_time)s, 0, %(question_id)s, %(message_)s, %(image_name)s);", {"id": line[0], "submission_time":line[1], "question_id":line[2], "message_": line[3], "image_name": str(line[4])})
+    cursor.execute(
+        "INSERT INTO answers (id, sub_time, vote_number, question_id, message_, image_name) VALUES (%(id)s, %(submission_time)s, 0, %(question_id)s, %(message_)s, %(image_name)s);",
+        {"id": line[0], "submission_time": line[1], "question_id": line[2], "message_": line[3],
+         "image_name": str(line[4])})
 
 
 def delete_answer(id, question_id):
     curs = get_alonescursor()
-    curs.execute("DELETE FROM answers WHERE id=%(id)s AND question_id=%(question_id)s;", {"id": id, "question_id": question_id})
+    curs.execute("DELETE FROM answers WHERE id=%(id)s AND question_id=%(question_id)s;",
+                 {"id": id, "question_id": question_id})
 
 
 def give_tag(id, title, question_id):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO tags (id, title, question_id) VALUES (%(id)s, %(title)s, %(question_id)s);", {"id": id, "title": title, "question_id": question_id})
+    cursor.execute("INSERT INTO tags (id, title, question_id) VALUES (%(id)s, %(title)s, %(question_id)s);",
+                   {"id": id, "title": title, "question_id": question_id})
 
 
 def get_tags():
@@ -166,28 +178,43 @@ def get_all_comment(filename):
 
 def save_comm_que(id, title, question_id):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO comments_questions (id, title, question_id) VALUES (%(id)s,%(title)s,%(question_id)s);", {"id": id, "title": title, "question_id": question_id})
+    cursor.execute("INSERT INTO comments_questions (id, title, question_id) VALUES (%(id)s,%(title)s,%(question_id)s);",
+                   {"id": id, "title": title, "question_id": question_id})
 
 
 def save_comm_ans(id, title, answer_id):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO comments_answers (id, title, answer_id) VALUES (%(id)s,%(title)s,%(answer_id)s);", {"id": id, "title": title, "answer_id": answer_id})
+    cursor.execute("INSERT INTO comments_answers (id, title, answer_id) VALUES (%(id)s,%(title)s,%(answer_id)s);",
+                   {"id": id, "title": title, "answer_id": answer_id})
 
 
 def del_com(id, filename):
     cursor = get_alonescursor()
-    cursor.execute("DELETE FROM %(filename)s WHERE id = %(id)s", {"filename": AsIs(filename), "id": id} )
+    cursor.execute("DELETE FROM %(filename)s WHERE id = %(id)s", {"filename": AsIs(filename), "id": id})
 
 
 def update_com_qu(id, filename, title):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE question_id = %(id)s", {"filename":AsIs(filename), "id": id, "title": title})
+    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE question_id = %(id)s",
+                   {"filename": AsIs(filename), "id": id, "title": title})
 
 
 def update_com_an(id, filename, title):
     cursor = get_alonescursor()
+<<<<<<< HEAD
     cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s", {"filename":AsIs(filename), "id": id, "title": title})
 
 def save_user(username, email, pw):
     cursor = get_alonescursor()
     cursor.execute('INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);', {'username':username, 'email':email, 'pw':pw})
+=======
+    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s",
+                   {"filename": AsIs(filename), "id": id, "title": title})
+
+
+def read_user_info():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT * FROM users_info ")
+    result = cursor.fetchall()
+    return result
+>>>>>>> 810ff98611533dd5fad75fe1449f6f73f1f0b6ed
