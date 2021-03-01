@@ -8,6 +8,10 @@
     .content{
         text-align: center;
     }
+    .tables{
+        margin-left: auto;
+  margin-right: auto;
+    }
 </style>
 </head>
 <body>
@@ -51,9 +55,41 @@
                     <p>Number of comments: {{ data[8] }} </p>
                     <p>Reputation: {{ data[4] }} </p>
                     {% endif %}
-                {% endfor %}</div>
-
-
+                {% endfor %}
+               <br>
+        <hr>
+        <br>
+<table class="tables">
+    <tr>
+        <th>Q Title</th>
+        <th>Question</th>
+    </tr>
+    <tr>
+      {% for q in questions %}
+          {% set user_id = q[7]|int %}
+          {% if user_id == id %}
+            <td>{{ q[4] }}</td><td>{{ q[5] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+</table>
+           <table class="tables">
+    <tr>
+    <br>
+        <hr>
+        <br>
+        <th>Answers</th>
+    </tr>
+    <tr>
+      {% for a in answers %}
+          {% set user_id = a[6]|int %}
+          {% if user_id == id %}
+            <td>{{ a[4] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+</table>
+</div>
 
 </body>
 </html>

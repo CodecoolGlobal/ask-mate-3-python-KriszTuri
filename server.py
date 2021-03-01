@@ -299,6 +299,7 @@ def del_com_ans(id):
     del_com(id, "answer_question")
     return redirect("/list")
 
+
 @app.route("/edit_comment_answer/<id>")
 def edit_comment_answer(id):
     answer = ""
@@ -307,6 +308,7 @@ def edit_comment_answer(id):
         if str(i[0]) == id:
             answer = i
     return render_template("edit_com_a.html", answer=answer)
+
 
 @app.route("/edit_anser_com_save/<id>", methods=["POST"])
 def edit_anser_com_save(id):
@@ -323,6 +325,7 @@ def edit_comment_question(id):
         if str(i[0]) == id:
             question = i
     return render_template("edit_com_q.html", question=question)
+
 
 @app.route("/edit_quest_com_save/<id>", methods=["POST"])
 def edit_quest_com_save(id):
@@ -369,8 +372,10 @@ def list_users():
 
 @app.route("/user/<user_id>")
 def user_profile_page(user_id):
+    questions = data_manager.read_questions()
     users = data_manager.read_user_info()
-    return render_template("profile_page.html", id=int(user_id), users=users)
+    answers = data_manager.read_answers()
+    return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers)
 
 
 if __name__ == "__main__":

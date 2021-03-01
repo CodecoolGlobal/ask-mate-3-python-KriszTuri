@@ -27,7 +27,7 @@
                     <form action="/like">
                         <button type="submit" class="like_button">Like</button>
                     </form>
-                        <b>{{ likes }}</b>
+                        <b>{% block likes %}{% endblock %}</b>
                 </td>
             </tr>
         </table>
