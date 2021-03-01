@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" class="bg">
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='reg_log.css')}}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration page</title>
+</head>
+<body>
+    <table class="site_header">
+        <tr class="site_header_menu">
+            <td>
+                <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+            </td>
+            <td>
+                <b><a href="/about">About</a></b>
+            </td>
+            <td>
+                <b><a href="/list">Questions</a></b>
+            </td>
+            <td>
+                <b><a href="/contact">Contact Us</a></b>
+            </td>
+            <td>
+                <form action="/like">
+                    <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                </form>  
+            </td>
+        </tr>
+    </table>
+    <table class="center">
+        <tr>
+            <td><h1>Registration page</h1></td>
+        </tr>
+        <tr>
+
+            <td>
+                username
+            </td>
+            <td>
+                password
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form> 
+                    <input type="text" id="new_user" name="new_user">
+            </td>
+
+            <td>
+
+                    <input type="password" id="new_user_pw" name="new_user_pw">
+            </td>
+            <td>
+                    <input type="submit" value="sign up">
+                </form>
+            </td>
+
+        </tr>
+        <tr>
+            <td><a href="/" class="re_login_style">go back to the main page</a>
+            </td>
+        </tr>
+    </table>
+    
+    
+</body>
+</html>

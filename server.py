@@ -343,6 +343,15 @@ def add_new_tag(id):
     return(redirect(f"/edit_question/{id}"))
 
 
+@app.route("/registration")
+def registration():
+    return render_template("reg.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,  # Allow verbose error reports

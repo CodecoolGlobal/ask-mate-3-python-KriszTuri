@@ -1,0 +1,37 @@
+.bg{
+	/*background-image: url("bg_test_2.jpg");
+	background-repeat:no-repeat;
+	background-size:cover;*/
+	background-color: lightgrey
+}
+
+a{
+	text-decoration: none;
+    color: black;
+}
+
+td {
+	width: 100px;
+  }
+  
+p {
+    font-size: 20px;
+      color: black;
+      text-shadow: 2px 2px 8px #000000; 
+  }
+.site_header{
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+.site_header_menu{
+      border: 1px solid black;
+  }
+
+.site_logo{
+    width:40%;
+    height: auto;
+  }
+.center {
+	margin-left: auto;
+	margin-right: auto;
+  }
