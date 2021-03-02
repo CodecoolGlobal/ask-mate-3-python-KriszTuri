@@ -33,14 +33,14 @@ def about_page():
     return render_template("about.html")
 
 
-@app.route("/question/<index_of_que>", methods=['GET', 'POST'])
-def question_write(index_of_que):
+@app.route("/question/<index_of_que>/<user_id>", methods=['GET', 'POST'])
+def question_write(index_of_que, user_id):
     view_num_add(index_of_que)
     question = get_que(index_of_que)
     question_comments = get_all_comment("comments_questions")
     answers = get_all_answers(index_of_que)
     answer_comments = get_all_comment("comments_answers")
-    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments)
+    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>", methods=["GET", "POST"])
@@ -382,7 +382,10 @@ def user_profile_page(user_id):
     questions = data_manager.read_questions()
     users = data_manager.read_user_info()
     answers = data_manager.read_answers()
-    return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers)
+    question_comments = data_manager.read_question_comments()
+    answer_comments = data_manager.read_answer_comments()
+    return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
+
 
 
 if __name__ == "__main__":

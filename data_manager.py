@@ -201,12 +201,15 @@ def update_com_qu(id, filename, title):
 
 def update_com_an(id, filename, title):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s", {"filename":AsIs(filename), "id": id, "title": title})
+    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s",
+                   {"filename": AsIs(filename), "id": id, "title": title})
 
 
 def save_user(username, email, pw):
     cursor = get_alonescursor()
-    cursor.execute('INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);', {'username':username, 'email':email, 'pw':pw})
+    cursor.execute(
+        'INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);',
+        {'username': username, 'email': email, 'pw': pw})
 
 
 def read_user_info():
@@ -228,3 +231,17 @@ def read_answers():
     cursor.execute("SELECT * FROM answers")
     result = cursor.fetchall()
     return result
+
+
+def read_question_comments():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_questions.title, comments_questions.user_id FROM questions JOIN comments_questions ON(questions.id = comments_questions.question_id)")
+    result = cursor.fetchall()
+    return result
+
+
+def read_answer_comments():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_answers.title, comments_answers.user_id FROM questions JOIN answers ON(questions.id = answers.question_id) JOIN comments_answers ON(answers.id = comments_answers.answer_id)" )
+    answer_comments = cursor.fetchall()
+    return answer_comments
