@@ -53,7 +53,7 @@
 <table class="center">
     <tr>
         <th><h3>Q title</h3></th>
-        <th><h3>Question</h3></th>
+        <th><h2>Question</h2></th>
     </tr>
     <tr>
       {% for q in questions %}
@@ -72,7 +72,7 @@
            <table class="center">
 
                <tr>
-                   <th><h3>Answer</h3></th>
+                   <th><h2>Answer</h2></th>
                 </tr>
 
       {% for a in answers %}
@@ -88,26 +88,25 @@
 <br>
            <hr>
            <br>
-           <h3>Comments</h3>
-           <br>
+           <h2>Comments</h2>
            <table class="center">
                <tr>
                </tr>
 
-                   <b>Comments on questions:</b>
+                   <h4>Comments on questions:</h4>
                    {% for qc in question_comments %}
                            {% set user_id = qc[3]|int %}
                         {% if user_id == id %}
                    <tr>
                        <td>
-                   <a href="/question/{{qc[1]}}/{{qc[0]}}">{{ qc[2] }}
+                           <a href="/question/{{qc[1]}}/{{qc[0]}}">{{ qc[2] }}</a>
                    </td>
                        </tr>
                        {% endif %}
                    {% endfor %}
            </table>
            <table class="center">
-               <b>Comments on answers:</b>
+               <h4>Comments on answers:</h4>
                {% for ac in answer_comments %}
                        {% set user_id = ac[3]|int %}
           {% if user_id == id %}
