@@ -31,22 +31,35 @@
             </tr>
         </table>
            <hr>
+
            <div class="center">
            <br>
             <h1>User Profile Details</h1>
             <br>
+
+
                 {% for data in users %}
                     {% if id == data[0]   %}
-                    <p>User id: {{ data[0] }} </p>
-                    <p>Username: {{ data[1] }} </p>
+                        {% if data[1] == 'Ruby'  %}
+                            <img class="profile_picture" src="/static/Ruby.jpg" alt="profile picture" width="12%" height="Auto">
+                            {% elif data[1] == 'Pici'  %}
+                             <img class="profile_picture" src="/static/Pici.jpg" alt="profile picture" width="12%" height="Auto">
+                            {% else %}
+                        <img class="profile_picture" src="/static/profile_picture.jpg" alt="profile picture" width="10%" height="Auto">
+                            {% endif %}
+                            <p class="profile_data">User id: {{ data[0] }} </p>
+                    <p class="profile_data">Username: {{ data[1] }} </p>
                         {% set time= data[5]|string %}
-                    <p>Registration Date: {{ time[:16] }} </p>
-                    <p>Number of asked questions: {{ data[6] }} </p>
-                    <p>Number of answers: {{ data[7] }} </p>
-                    <p>Number of comments: {{ data[8] }} </p>
-                    <p>Reputation: {{ data[4] }} </p>
+                    <p class="profile_data">Registration Date: {{ time[:16] }} </p>
+                    <p class="profile_data">Number of asked questions: {{ data[6] }} </p>
+                    <p class="profile_data">Number of answers: {{ data[7] }} </p>
+                    <p class="profile_data">Number of comments: {{ data[8] }} </p>
+                    <p class="profile_data">Reputation: {{ data[4] }} </p>
                     {% endif %}
                 {% endfor %}
+
+
+
                <br>
         <hr>
         <br>
