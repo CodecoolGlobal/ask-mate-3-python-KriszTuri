@@ -227,9 +227,6 @@ def read_reputation(user_id):
     return reputation_and_user
 
 
-print(read_reputation(user_id=2)[0][0])
-
-
 def update_reputation(new_reputation, user_id):
     cursor = get_alonescursor()
     cursor.execute("UPDATE users_info SET reputation = %(new_reputation)s WHERE %(user_id)s = id", {'new_reputation': new_reputation, 'user_id': user_id})
