@@ -375,17 +375,18 @@ def registration():
             message = "Username or email already taken!"
     return render_template("reg.html", message = message)
 
+
 @app.route('/logout')
 def logout():
     session.pop('username')
     session.pop('pw')
     return redirect("/")
 
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
-
     if request.method == "POST":
         users = data_manager.read_user_info()
         message = ""
@@ -425,7 +426,6 @@ def user_profile_page(user_id):
     question_comments = data_manager.read_question_comments()
     answer_comments = data_manager.read_answer_comments()
     return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
-
 
 
 if __name__ == "__main__":

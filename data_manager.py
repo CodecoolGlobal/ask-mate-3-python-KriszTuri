@@ -26,6 +26,8 @@ def get_all(sorted, sort):
     return result
 
 
+#print(get_all(sorted, sort='DESC'))
+
 def get_all_answers(id):
     cursor = get_alonescursor()
     cursor.execute("SELECT * FROM answers WHERE question_id = %(q_id)s", {"q_id": id})
@@ -220,6 +222,16 @@ def read_user_info():
     return result
 
 
+def read_reputation():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT reputation, id FROM users_info ")
+    reputation_and_user = cursor.fetchall()
+    return reputation_and_user
+
+
+print(read_reputation())
+
+
 def read_questions():
     cursor = get_alonescursor()
     cursor.execute("SELECT * FROM questions")
@@ -235,6 +247,7 @@ def read_answers():
 
 ##PASSWORD HATCHING
 
+
 def hash_password(plain_text_password):
     # By using bcrypt, the salt is saved into the hash itself
     hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
@@ -244,6 +257,7 @@ def hash_password(plain_text_password):
 def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
 
 def read_question_comments():
     cursor = get_alonescursor()
