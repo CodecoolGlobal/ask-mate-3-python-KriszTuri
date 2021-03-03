@@ -21,7 +21,7 @@
                     <b><a href="/contact">Contact Us</a></b>
                 </td>
                 <td>
-                    <b><a href="/users">Users List</a></b>
+                    <b><a href="/">Main Page</a></b>
                 </td>
                 <td>
                     <form action="/like">
@@ -33,7 +33,7 @@
            <hr>
            <div class="center">
            <br>
-            <h3>User Profile Details</h3>
+            <h1>User Profile Details</h1>
             <br>
                 {% for data in users %}
                     {% if id == data[0]   %}
@@ -52,34 +52,74 @@
         <br>
 <table class="center">
     <tr>
-        <th>Q Title</th>
-        <th>Question</th>
+        <th><h3>Q title</h3></th>
+        <th><h2>Question</h2></th>
     </tr>
     <tr>
       {% for q in questions %}
           {% set user_id = q[7]|int %}
           {% if user_id == id %}
-            <td>{{ q[4] }}</td><td>{{ q[5] }}</td>
-            {% endif %}
+            <tr>
+                <td><a href="/question/{{q[0]}}/{{id}}">{{ q[4] }}</a></td><td><a href="/question/{{q[0]}}/{{id}}">{{ q[5] }}</a></td>
+              </tr>
+          {% endif %}
             {% endfor %}
-        </tr>
+
 </table>
-           <table class="center">
-    <tr>
-    <br>
+               <br>
         <hr>
         <br>
-        <th>Answers</th>
-    </tr>
-    <tr>
+           <table class="center">
+
+               <tr>
+                   <th><h2>Answer</h2></th>
+                </tr>
+
       {% for a in answers %}
           {% set user_id = a[6]|int %}
           {% if user_id == id %}
-            <td>{{ a[4] }}</td>
-            {% endif %}
+              <tr>
+                  <td><a href="/question/{{a[3]}}/{{user_id}}">{{ a[4] }}</a></td>
+          </tr>
+          {% endif %}
             {% endfor %}
-        </tr>
+
 </table>
+<br>
+           <hr>
+           <br>
+           <h2>Comments</h2>
+           <table class="center">
+               <tr>
+               </tr>
+
+                   <h4>Comments on questions:</h4>
+                   {% for qc in question_comments %}
+                           {% set user_id = qc[3]|int %}
+                        {% if user_id == id %}
+                   <tr>
+                       <td>
+                           <a href="/question/{{qc[1]}}/{{qc[0]}}">{{ qc[2] }}</a>
+                   </td>
+                       </tr>
+                       {% endif %}
+                   {% endfor %}
+           </table>
+           <table class="center">
+               <h4>Comments on answers:</h4>
+               {% for ac in answer_comments %}
+                       {% set user_id = ac[3]|int %}
+          {% if user_id == id %}
+                   <tr>
+                   <td>
+                       <a href="/question/{{ac[1]}}/{{ac[0]}}">{{ ac[2] }}</a>
+               </td>
+                   </tr>
+                    {% endif %}
+               {% endfor %}
+           </table>
+
+
 </div>
 
 </body>
