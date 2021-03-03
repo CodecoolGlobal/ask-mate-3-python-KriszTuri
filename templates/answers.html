@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg_other">
     <head>
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Question Details</title>
     </head>
-    <body class="bg">
+    <body >
 <table class="site_header">
     <tr class="site_header_menu">
         <td>
@@ -21,6 +21,9 @@
         <td>
             <b><a href="/contact">Contact Us</a></b>
         </td>
+        <td>
+                    <b><a href="/users">Users List</a></b>
+                </td>
         <td>
             <form action="/like">
                 <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>

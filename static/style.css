@@ -32,6 +32,13 @@ a {
 a:hover{
 	color:midnightblue;
 }
+.signup{
+	background-color: transparent;
+	text-decoration: none;
+	width: 100%;
+	text-align: right;
+	border-right: 120px solid transparent;
+}
 .tags{
 	background-color: #74ad5a;
 	border-radius: 12px;
@@ -53,9 +60,12 @@ a:hover{
 	color: rgb(0, 0, 0);
 }
 .bg{
-	/*background-image: url("bg_test_2.jpg");
+	background-image: url("bg.jpg");
 	background-repeat:no-repeat;
-	background-size:cover;*/
+	background-size:cover;
+
+}
+.bg_other{
 	background-color: lightgrey
 }
 
@@ -118,6 +128,7 @@ a:hover{
 	text-decoration:none;
 	text-shadow:0px 1px 0px #7cacde;
 }
+
 .downvote:hover {
 	background:linear-gradient(to bottom, #4994d6 5%, #1e73a8 100%);
 	background-color:#4994d6;
@@ -196,3 +207,11 @@ a:hover{
 	border-style: solid;
 	border-color: darkgreen;
 }
+
+.center{
+	text-align: center;
+	margin: auto;
+	border-radius: 8px;
+	border-width: medium;
+}
+

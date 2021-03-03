@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="bg_other">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>User Profile Page</title>
+</head>
+<body>
+           <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <b><a href="/">Main Page</a></b>
+                </td>
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                    </form>
+                </td>
+            </tr>
+        </table>
+           <hr>
+
+           <div class="center">
+           <br>
+            <h1>User Profile Details</h1>
+            <br>
+
+
+                {% for data in users %}
+                    {% if id == data[0]   %}
+                        {% if data[1] == 'Ruby'  %}
+                            <img class="profile_picture" src="/static/Ruby.jpg" alt="profile picture" width="12%" height="Auto">
+                            {% elif data[1] == 'Pici'  %}
+                             <img class="profile_picture" src="/static/Pici.jpg" alt="profile picture" width="12%" height="Auto">
+                            {% else %}
+                        <img class="profile_picture" src="/static/profile_picture.jpg" alt="profile picture" width="10%" height="Auto">
+                            {% endif %}
+                            <p class="profile_data">User id: {{ data[0] }} </p>
+                    <p class="profile_data">Username: {{ data[1] }} </p>
+                        {% set time= data[5]|string %}
+                    <p class="profile_data">Registration Date: {{ time[:16] }} </p>
+                    <p class="profile_data">Number of asked questions: {{ data[6] }} </p>
+                    <p class="profile_data">Number of answers: {{ data[7] }} </p>
+                    <p class="profile_data">Number of comments: {{ data[8] }} </p>
+                    <p class="profile_data">Reputation: {{ data[4] }} </p>
+                    {% endif %}
+                {% endfor %}
+
+               <br>
+        <hr>
+        <br>
+<table class="center">
+    <tr>
+        <th><h3>Q title</h3></th>
+        <th><h2>Question</h2></th>
+    </tr>
+    <tr>
+      {% for q in questions %}
+          {% set user_id = q[7]|int %}
+          {% if user_id == id %}
+            <tr>
+                <td><a href="/question/{{q[0]}}/{{id}}">{{ q[4] }}</a></td><td><a href="/question/{{q[0]}}/{{id}}">{{ q[5] }}</a></td>
+              </tr>
+          {% endif %}
+            {% endfor %}
+
+</table>
+               <br>
+        <hr>
+        <br>
+           <table class="center">
+
+               <tr>
+                   <th><h2>Answer</h2></th>
+                </tr>
+
+      {% for a in answers %}
+          {% set user_id = a[6]|int %}
+          {% if user_id == id %}
+              <tr>
+                  <td><a href="/question/{{a[3]}}/{{user_id}}">{{ a[4] }}</a></td>
+          </tr>
+          {% endif %}
+            {% endfor %}
+
+</table>
+<br>
+           <hr>
+           <br>
+           <h2>Comments</h2>
+           <table class="center">
+               <tr>
+               </tr>
+
+                   <h4>Comments on questions:</h4>
+                   {% for qc in question_comments %}
+                           {% set user_id = qc[3]|int %}
+                        {% if user_id == id %}
+                   <tr>
+                       <td>
+                           <a href="/question/{{qc[1]}}/{{qc[0]}}">{{ qc[2] }}</a>
+                   </td>
+                       </tr>
+                       {% endif %}
+                   {% endfor %}
+           </table>
+           <table class="center">
+               <h4>Comments on answers:</h4>
+               {% for ac in answer_comments %}
+                       {% set user_id = ac[3]|int %}
+          {% if user_id == id %}
+                   <tr>
+                   <td>
+                       <a href="/question/{{ac[1]}}/{{ac[0]}}">{{ ac[2] }}</a>
+               </td>
+                   </tr>
+                    {% endif %}
+               {% endfor %}
+           </table>
+
+
+</div>
+
+</body>
+</html>

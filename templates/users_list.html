@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg_other">
 <head>
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
         <meta charset="UTF-8">
@@ -22,10 +22,11 @@
                     <b><a href="/contact">Contact Us</a></b>
                 </td>
                 <td>
-                    <b><a href="/users">Users List</a></b>
+                    <b><a href="/">Main Page</a></b>
                 </td>
             </tr>
       </table>
+
                   <hr>
           <br>
         {% if not logged_in %}
@@ -55,9 +56,11 @@
         <tr>
             {% for data in users %}
                     <td>
-                    {{ data[1] }}
-                     <td>
-                    {{ data[5] }}
+                        <a href="/user/{{ data[0] }}">{{ data[1] }}</a>
+                    </td>
+                <td>
+                     {% set time=data[5]|string %}
+                    {{ time[:16] }}
                     </td>
                    <td>
                     {{ data[6] }}
@@ -71,8 +74,9 @@
                    <td>
                     {{ data[4] }}
                     </td>
+                </tr>
                 {% endfor %}
-        </tr>
+
 
                 </table>
         {% endif %}

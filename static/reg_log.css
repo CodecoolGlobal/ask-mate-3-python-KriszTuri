@@ -35,3 +35,14 @@ p {
 	margin-left: auto;
 	margin-right: auto;
   }
+
+.bg{
+    background-image: url("bg.jpg");
+    background-repeat:no-repeat;
+    background-size:cover;
+  
+  }
+.bg_other{
+    background-color: lightgrey
+  }
+  

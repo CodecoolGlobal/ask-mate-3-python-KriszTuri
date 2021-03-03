@@ -1,4 +1,4 @@
-from flask import Flask, flash, render_template, request, redirect
+from flask import Flask, flash, render_template, request, redirect, session, escape
 from data_manager import read_csv_files, convert_to_csv_file, get_all
 from data_manager import get_all_answers, get_que, vote_update_minus
 from data_manager import vote_update_plus, save_question, update_que
@@ -10,13 +10,18 @@ from data_manager import get_search_que, get_tags, give_tag, delete_tag_
 from data_manager import get_search_ans, save_answers, get_all_comment
 from data_manager import save_comm_ans, save_comm_que
 from data_manager import save_user
-import os
+from data_manager import hash_password, verify_password
+import data_manager
+import os, time
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
 import datetime
+import bcrypt
+
 
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/list", methods=['GET', "POST"])
@@ -33,15 +38,19 @@ def about_page():
     return render_template("about.html")
 
 
-@app.route("/question/<index_of_que>", methods=['GET', 'POST'])
-def question_write(index_of_que):
+@app.route("/question/<index_of_que>/<user_id>", methods=['GET', 'POST'])
+def question_write(index_of_que, user_id):
     view_num_add(index_of_que)
     question = get_que(index_of_que)
     question_comments = get_all_comment("comments_questions")
     answers = get_all_answers(index_of_que)
     answer_comments = get_all_comment("comments_answers")
+<<<<<<< HEAD
     user_id = session['id'] # itt kéne ez a cucc, de 
     return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, user_id=user_id)
+=======
+    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
+>>>>>>> origin/branch1
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>", methods=["GET", "POST"])
@@ -121,10 +130,16 @@ def like_button():
 
 @app.route("/")
 def render_main_page():
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in = False
     like_data_file = open("sample_data/site_likes.txt", "r")
     like_number = like_data_file.read()
     list_of_questions = list_last_5()
-    return render_template("index.html", likes=like_number, list = list_of_questions)
+    return render_template("index.html", likes=like_number, list = list_of_questions, logged_in = logged_in, username=username)
 
 
 @app.route("/edit_question/<question_id>", methods=["GET", "POST"])
@@ -353,18 +368,56 @@ def add_new_tag(id):
 
 @app.route("/registration", methods=["POST", "GET"])
 def registration():
+    users = data_manager.read_user_info()
+    message = ""
     if request.method == "POST":
         username = request.form["new_user"]
-        email = request.form["new_email"]
+        email = request.form["new_email"] 
         pw = request.form["new_user_pw"]
-        save_user(username,email,pw)
-        return redirect("/")
-    return render_template("reg.html")
+        hashed_pw = hash_password(pw)
+        username_list = [username[1] for username in users]
+        if username not in username_list or not username_list:
+            message = "Registration successful!"
+            save_user(username,email,hashed_pw)
+        else:
+            message = "Username or email already taken!"
+    return render_template("reg.html", message = message)
 
 
-@app.route("/login")
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    session.pop('pw')
+    return redirect("/")
+
+
+@app.route("/login", methods=["POST", "GET"])
 def login():
-    return render_template("login.html")
+    if request.method == "GET":
+        return render_template("login.html")
+    if request.method == "POST":
+        users = data_manager.read_user_info()
+        message = ""
+        user = request.form['user']
+        password = request.form['pw']
+        #salt = bcrypt.gensalt()
+        #hashed = bcrypt.hashpw(pw, salt)
+        username_list = [username[1] for username in users]
+        password_list = [password[3] for password in users]
+        if user in username_list:
+            #if bcrypt.checkpw(pw, hashed):
+            index = username_list.index(user)
+            if password_list[index] == password:
+                session['username'] = request.form['user']
+                session['pw'] = request.form['pw']
+                message = "Login successful!"
+                #time.sleep(1.5)
+                return redirect("/")
+            else:
+                message = "Incorrect username or password!"
+        else:
+            message = "User does not exist!"
+        return render_template("login.html", message=message)
 
 
 @app.route("/users")
@@ -374,8 +427,18 @@ def list_users():
 
 
 @app.route("/user/<user_id>")
+<<<<<<< HEAD
 def user_page(user_id):
     pass
+=======
+def user_profile_page(user_id):
+    questions = data_manager.read_questions()
+    users = data_manager.read_user_info()
+    answers = data_manager.read_answers()
+    question_comments = data_manager.read_question_comments()
+    answer_comments = data_manager.read_answer_comments()
+    return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
+>>>>>>> origin/branch1
 
 
 if __name__ == "__main__":

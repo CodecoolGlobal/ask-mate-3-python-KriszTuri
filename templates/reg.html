@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="bg">
+<html lang="en" class="bg_other">
 <head>
     <link rel="stylesheet" href="{{url_for('static', filename='reg_log.css')}}">
     <meta charset="UTF-8">
@@ -23,6 +23,9 @@
                 <b><a href="/contact">Contact Us</a></b>
             </td>
             <td>
+                    <b><a href="/users">Users List</a></b>
+                </td>
+            <td>
                 <form action="/like">
                     <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
                 </form>  
@@ -31,7 +34,7 @@
     </table>
     <table class="center">
         <tr>
-            <td><h1>Registration page</h1></td>
+            <td><h1>Join Us!</h1></td>
         </tr>
         <tr>
             <td>
@@ -58,7 +61,18 @@
             </td>
 
         </tr>
+
         <tr>
+            <td>
+                {% if message == "Registration successful!" %}
+                <div style="color: green;">{{message}}</div>
+                {% elif message == "Username or email already taken!" %}
+                <div style="color: red;">{{message}}</div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+
             <td><a href="/" class="re_login_style">go back to the main page</a>
             </td>
         </tr>

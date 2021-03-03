@@ -1,6 +1,7 @@
 import os
 import psycopg2
 from psycopg2.extensions import AsIs
+import bcrypt
 
 
 def user():
@@ -24,6 +25,8 @@ def get_all(sorted, sort):
     result = cursor.fetchall()
     return result
 
+
+#print(get_all(sorted, sort='DESC'))
 
 def get_all_answers(id):
     cursor = get_alonescursor()
@@ -200,15 +203,69 @@ def update_com_qu(id, filename, title):
 
 def update_com_an(id, filename, title):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s", {"filename":AsIs(filename), "id": id, "title": title})
+    cursor.execute("UPDATE %(filename)s SET title = %(title)s WHERE answer_id = %(id)s",
+                   {"filename": AsIs(filename), "id": id, "title": title})
+
 
 def save_user(username, email, pw):
     cursor = get_alonescursor()
-    cursor.execute('INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);', {'username':username, 'email':email, 'pw':pw})
-
+    cursor.execute(
+        'INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);',
+        {'username': username, 'email': email, 'pw': pw})
 
 def read_user_info():
     cursor = get_alonescursor()
     cursor.execute("SELECT * FROM users_info ")
     result = cursor.fetchall()
     return result
+
+
+def read_reputation():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT reputation, id FROM users_info ")
+    reputation_and_user = cursor.fetchall()
+    return reputation_and_user
+
+
+print(read_reputation())
+
+
+def read_questions():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT * FROM questions")
+    result = cursor.fetchall()
+    return result
+
+
+def read_answers():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT * FROM answers")
+    result = cursor.fetchall()
+    return result
+
+##PASSWORD HATCHING
+
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+def read_question_comments():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_questions.title, comments_questions.user_id FROM questions JOIN comments_questions ON(questions.id = comments_questions.question_id)")
+    result = cursor.fetchall()
+    return result
+
+
+def read_answer_comments():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_answers.title, comments_answers.user_id FROM questions JOIN answers ON(questions.id = answers.question_id) JOIN comments_answers ON(answers.id = comments_answers.answer_id)" )
+    answer_comments = cursor.fetchall()
+    return answer_comments

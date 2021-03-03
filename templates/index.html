@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg">
     <head>
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
         <meta charset="utf-8">
@@ -9,7 +9,7 @@
     </head>
 
     </form>
-    <body class ="bg">            
+    <body>            
         <table class="site_header">
             <tr class="site_header_menu">
                 <td>
@@ -27,12 +27,26 @@
                 <td>
                     <b><a href="/users">Users List</a></b>
                 </td>
+
                 <td>
                     <form action="/like">
-                        <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
+                        <button type="submit" class="like_button">Like</button>  {% block likes %}<b>{{ likes }}</b>{% endblock %}
                     </form>  
                 </td>
             </tr>
+        </table>
+        <table class="signup">
+            {% if logged_in  %}
+            <tr>
+                <td><p><b>{{username}} / <a href="/logout">Logout</a></b></p></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td>
+                    <b><a href="/registration">Sign Up</a>/<a href="/login">Sign In</a></b>
+                </td>
+            </tr>
+            {% endif %}
         </table>
         <i><p class="motto">AskMate: <br> where no question's left unanswered . . .</p></i>
         <table style="width: 3cm;">
@@ -59,7 +73,7 @@
             <tr style="text-align: center;">
                 <td>
                     {% for question in list %}
-                        <a href="/question/{{question[0]}}"><p>{{question[4]}}</p></a>
+                        <a href="/question/{{question[0]}}/{{question[7]}}"><p>{{question[4]}}</p></a>
                     {% endfor %}
                 </td>
             </tr>
