@@ -26,8 +26,6 @@ def get_all(sorted, sort):
     return result
 
 
-#print(get_all(sorted, sort='DESC'))
-
 def get_all_answers(id):
     cursor = get_alonescursor()
     cursor.execute("SELECT * FROM answers WHERE question_id = %(q_id)s", {"q_id": id})
@@ -227,9 +225,6 @@ def read_reputation():
     cursor.execute("SELECT reputation, id FROM users_info ")
     reputation_and_user = cursor.fetchall()
     return reputation_and_user
-
-
-print(read_reputation())
 
 
 def read_questions():
