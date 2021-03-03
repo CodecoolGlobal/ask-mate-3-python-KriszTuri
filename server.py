@@ -10,11 +10,14 @@ from data_manager import get_search_que, get_tags, give_tag, delete_tag_
 from data_manager import get_search_ans, save_answers, get_all_comment
 from data_manager import save_comm_ans, save_comm_que
 from data_manager import save_user
+from data_manager import hash_password, verify_password
 import data_manager
 import os
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
 import datetime
+import bcrypt
+
 
 
 app = Flask(__name__)
@@ -356,19 +359,39 @@ def registration():
         username = request.form["new_user"]
         email = request.form["new_email"] 
         pw = request.form["new_user_pw"]
+        hashed_pw = hash_password(pw)
         username_list = [username[1] for username in users]
-        print(username_list)
         if username not in username_list or not username_list:
             message = "Registration successful!"
-            save_user(username,email,pw)
+            save_user(username,email,hashed_pw)
         else:
             message = "Username or email already taken!"
     return render_template("reg.html", message = message)
 
 
-@app.route("/login")
+@app.route("/login", methods=["POST", "GET"])
 def login():
-    return render_template("login.html")
+    if request.method == "GET":
+        return render_template("login.html")
+
+
+    if request.method == "POST":
+        users = data_manager.read_user_info()
+        message = ""
+        username = request.form["user"]
+        pw = request.form["pw"]
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(pw, salt)
+        username_list = [username[1] for username in users]
+
+        if username in username_list:
+            if bcrypt.checkpw(pw, hashed):
+                message = "Login successful!"
+            else:
+                message = "Incorrect username or password!"
+        else:
+            message = "User does not exist!"
+        return render_template("login.html", message=message)
 
 
 @app.route("/users")

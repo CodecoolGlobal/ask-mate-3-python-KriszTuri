@@ -32,6 +32,13 @@ a {
 a:hover{
 	color:midnightblue;
 }
+.signup{
+	background-color: transparent;
+	text-decoration: none;
+	width: 100%;
+	text-align: right;
+	border-right: 120px solid transparent;
+}
 .tags{
 	background-color: #74ad5a;
 	border-radius: 12px;
@@ -53,7 +60,7 @@ a:hover{
 	color: rgb(0, 0, 0);
 }
 .bg{
-	background-image: url("bg_test_2.jpg");
+	background-image: url("bg.jpg");
 	background-repeat:no-repeat;
 	background-size:cover;
 
