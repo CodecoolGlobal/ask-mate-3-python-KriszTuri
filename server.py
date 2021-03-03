@@ -24,7 +24,8 @@ app = Flask(__name__)
 def list_questions(sorted='vote_number', sort='DESC'):
     questions = get_all(sorted, sort)
     tags = get_all_comment("tags")
-    return render_template("list_questions.html", questions=questions, tags=tags)
+    user_id = session[""]
+    return render_template("list_questions.html", questions=questions, tags=tags, user_id=user_id)
 
 
 @app.route("/about")
@@ -39,7 +40,8 @@ def question_write(index_of_que):
     question_comments = get_all_comment("comments_questions")
     answers = get_all_answers(index_of_que)
     answer_comments = get_all_comment("comments_answers")
-    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments)
+    user_id = session['id'] # itt kéne ez a cucc, de 
+    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, user_id=user_id)
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>", methods=["GET", "POST"])
@@ -99,9 +101,9 @@ def sort_list():
         return redirect("/list")
 
 
-@app.route("/add-question/< user_id >", methods=["GET"])
+@app.route("/add-question/<user_id>", methods=["GET"])
 def new_question_page_render(user_id):
-    return render_template("add_new_question.html", user_id)
+    return render_template("add_new_question.html", user_id=user_id)
 
 
 @app.route("/like")
@@ -168,8 +170,8 @@ def answerdelete(answer_id, index_of_que):
     return redirect(f"/question/{index_of_que}")
 
 
-@app.route("/add_new_answer/<question_id>", methods=["POST"])
-def add_new_answer(question_id):
+@app.route("/add_new_answer/<question_id>/<user_id>", methods=["POST"])
+def add_new_answer(question_id, user_id):
     # <!--id;submission_time;vote_number;question_id;message;image-->
     answer = get_all_comment("answers") # Itt nem csak a kommenteket lehet megkapni hanem az atributumban szereplő table-ből mindent
     new_answer = []
@@ -193,13 +195,14 @@ def add_new_answer(question_id):
     new_answer.append(str(question_id))
     new_answer.append(answer_message)
     new_answer.append("")
+    new_answer.append(user_id)
     save_answers(new_answer)
     return redirect(f"/question/{question_id}")
 
 
-@app.route("/new_answer/<question_id>", methods=["POST"])
-def new_answer(question_id):
-    return render_template("add_new_answer.html", question_id=question_id)
+@app.route("/new_answer/<question_id>/<user_id>", methods=["POST"])
+def new_answer(question_id, user_id):
+    return render_template("add_new_answer.html", question_id=question_id, user_id=user_id)
 
 
 @app.route("/edit_que/<index_of_que>",  methods=["POST"])
@@ -250,13 +253,13 @@ def delete_tag(id):
     return redirect("/list")
 
 
-@app.route("/new_comment_question/<question_id>")
-def new_comment_question(question_id):
-    return render_template("new_comment_question.html", question_id=question_id)
+@app.route("/new_comment_question/<question_id>/<user_id>")
+def new_comment_question(question_id, user_id):
+    return render_template("new_comment_question.html", question_id=question_id, user_id=user_id)
 
 
-@app.route("/save_comment/<question_id>", methods=["POST"])
-def save_comment_question(question_id):
+@app.route("/save_comment/<question_id>/<user_id>", methods=["POST"])
+def save_comment_question(question_id, user_id):
     comm_que = get_all_comment("comments_questions")
     comm_id = []
     new_comm_id = 1
@@ -265,16 +268,16 @@ def save_comment_question(question_id):
             comm_id.append(i[0])
         new_comm_id = max(comm_id)+1
     comment = format(request.form["comments_question"])
-    save_comm_que(new_comm_id, comment, question_id)
+    save_comm_que(new_comm_id, comment, question_id, user_id)
     return redirect(f"/question/{question_id}")
 
 
-@app.route("/new_comment_answer/<answer_id>")
-def new_comment_answer(answer_id):
-    return render_template("new_comment_answer.html", answer_id=answer_id)
+@app.route("/new_comment_answer/<answer_id>/<user_id>")
+def new_comment_answer(answer_id, user_id):
+    return render_template("new_comment_answer.html", answer_id=answer_id, user_id=user_id)
 
 
-@app.route("/save_comm_answr/<answer_id>/", methods=["POST"])
+@app.route("/save_comm_answr/<answer_id>/<user_id>", methods=["POST"])
 def save_comm_answr(answer_id):
     comm_ans = get_all_comment("comments_answers")
     comm_id = []
@@ -284,7 +287,7 @@ def save_comm_answr(answer_id):
             comm_id.append(i[0])
         new_comm_id = max(comm_id)+1
     comment = format(request.form["comments_answer"])
-    save_comm_ans(new_comm_id, comment, answer_id)
+    save_comm_ans(new_comm_id, comment, answer_id, user_id)
     return redirect("/list")
 
 

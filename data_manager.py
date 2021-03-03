@@ -96,8 +96,8 @@ def list_last_5():
 
 def save_question(line):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE users_info SET question_count = question + 1 WHERE id = %(id)s ", {"id": line[4]})
-    cursor.execute("INSERT INTO questions (id, view_number, vote_number, title, message_, image_name, user_id) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s, %(user_id)s);", {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3])}, "user_id": line[4])
+    cursor.execute("UPDATE users_info SET question_count = question_count + 1 WHERE id = %(id)s ", {"id": line[4]})
+    cursor.execute("INSERT INTO questions (id, view_number, vote_number, title, message_, image_name, user_id) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s, %(user_id)s);", {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3]), "user_id": line[4]})
 
 
 
@@ -139,10 +139,8 @@ def get_search_ans(search):
 
 def save_answers(line):
     cursor = get_alonescursor()
-    cursor.execute(
-        "INSERT INTO answers (id, sub_time, vote_number, question_id, message_, image_name) VALUES (%(id)s, %(submission_time)s, 0, %(question_id)s, %(message_)s, %(image_name)s);",
-        {"id": line[0], "submission_time": line[1], "question_id": line[2], "message_": line[3],
-         "image_name": str(line[4])})
+    cursor.execute("UPDATE users_info SET answer_count = answer_count + 1 WHERE id = %(id)s ", {"id": line[4]})
+    cursor.execute("INSERT INTO answers (id, sub_time, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, %(submission_time)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);", {"id": line[0], "submission_time": line[1], "question_id": line[2], "message_": line[3],"image_name": str(line[4]), "user_id": line[4]})
 
 
 def delete_answer(id, question_id):
@@ -176,16 +174,18 @@ def get_all_comment(filename):
     return result
 
 
-def save_comm_que(id, title, question_id):
+def save_comm_que(id, title, question_id, user_id):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO comments_questions (id, title, question_id) VALUES (%(id)s,%(title)s,%(question_id)s);",
-                   {"id": id, "title": title, "question_id": question_id})
+    cursor.execute("UPDATE users_info SET answer_cout = answer_count + 1 WHERE id = %(user_id)s", {"user_id": user_id})
+    cursor.execute("INSERT INTO comments_questions (id, title, question_id, user_id) VALUES (%(id)s,%(title)s,%(question_id)s, %(user_id)s);",
+    {"id": id, "title": title, "question_id": question_id, "user_id": user_id})
 
 
-def save_comm_ans(id, title, answer_id):
+def save_comm_ans(id, title, answer_id, user_id):
     cursor = get_alonescursor()
-    cursor.execute("INSERT INTO comments_answers (id, title, answer_id) VALUES (%(id)s,%(title)s,%(answer_id)s);",
-                   {"id": id, "title": title, "answer_id": answer_id})
+    cursor.execute("UPDATE users_info SET answer_cout = answer_count + 1 WHERE id = %(user_id)s", {"user_id": user_id})
+    cursor.execute("INSERT INTO comments_answers (id, title, answer_id, user_id) VALUES (%(id)s,%(title)s,%(answer_id)s, %(user_id)s);",
+                   {"id": id, "title": title, "answer_id": answer_id, "user_id": user_id})
 
 
 def del_com(id, filename):

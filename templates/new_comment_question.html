@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/save_comment/{{question_id}}" method="POST">
+    <form action="/save_comment/{{question_id}}/{{ user_id }}" method="POST">
         <textarea id="comments_question" name="comments_question"></textarea>
         <input type="submit" value="Send" id="send_button">
     </form>

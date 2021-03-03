@@ -74,7 +74,7 @@
                 <tr>
                     <td>
                         <p><u>Answers:</u></p>
-                        <form action="{{url_for('new_answer', question_id=id)}}" method="POST">
+                        <form action="{{url_for('new_answer', question_id=id, user_id=user_id)}}" method="POST">
                             <button type="submit" class = "upvote" name="New answer">Send Answer</button>
                         </form>
                         {%for item in answers%}
@@ -119,7 +119,7 @@
                     
                     <td>
                         Replies on answer:<br>
-                        <form action="/new_comment_answer/{{ id }}" method="GET"><input type="submit" class="upvote" value="Reply to answer"></form>
+                        <form action="/new_comment_answer/{{ id }}/{{ user_id }}" method="GET"><input type="submit" class="upvote" value="Reply to answer"></form>
                         {% for item2 in answer_comments %}
                             {% if item2[1] == item[0] %}
                             <a href="{{url_for('edit_comment_answer', id=item2[0])}}"><p>&#x270E;</a> {{item2[2]}}</p>
@@ -155,7 +155,7 @@
             <br>
             <tr>
                 <td>
-                    <i><p>Have something to say?</p></i> <form action="/new_comment_question/{{ id }}" method="GET"><input type="submit" class="send" value="Add comment"></form>
+                    <i><p>Have something to say?</p></i> <form action="/new_comment_question/{{ id }}/{{ user_id }}" method="GET"><input type="submit" class="send" value="Add comment"></form>
                 </td>
             </tr>
             
