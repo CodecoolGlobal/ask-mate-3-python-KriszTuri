@@ -36,11 +36,17 @@
             </tr>
         </table>
         <table class="signup">
+            {% if logged_in  %}
+            <tr>
+                <td><p><b>{{username}} / <a href="/logout">Logout</a></b></p></td>
+            </tr>
+            {% else %}
             <tr>
                 <td>
                     <b><a href="/registration">Sign Up</a>/<a href="/login">Sign In</a></b>
                 </td>
             </tr>
+            {% endif %}
         </table>
         <i><p class="motto">AskMate: <br> where no question's left unanswered . . .</p></i>
         <table style="width: 3cm;">

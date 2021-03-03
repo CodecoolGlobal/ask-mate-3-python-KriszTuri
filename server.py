@@ -1,4 +1,4 @@
-from flask import Flask, flash, render_template, request, redirect
+from flask import Flask, flash, render_template, request, redirect, session, escape
 from data_manager import read_csv_files, convert_to_csv_file, get_all
 from data_manager import get_all_answers, get_que, vote_update_minus
 from data_manager import vote_update_plus, save_question, update_que
@@ -12,7 +12,7 @@ from data_manager import save_comm_ans, save_comm_que
 from data_manager import save_user
 from data_manager import hash_password, verify_password
 import data_manager
-import os
+import os, time
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
 import datetime
@@ -21,6 +21,7 @@ import bcrypt
 
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/list", methods=['GET', "POST"])
@@ -123,10 +124,16 @@ def like_button():
 
 @app.route("/")
 def render_main_page():
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in = False
     like_data_file = open("sample_data/site_likes.txt", "r")
     like_number = like_data_file.read()
     list_of_questions = list_last_5()
-    return render_template("index.html", likes=like_number, list = list_of_questions)
+    return render_template("index.html", likes=like_number, list = list_of_questions, logged_in = logged_in, username=username)
 
 
 @app.route("/edit_question/<question_id>", methods=["GET", "POST"])
@@ -368,25 +375,35 @@ def registration():
             message = "Username or email already taken!"
     return render_template("reg.html", message = message)
 
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    session.pop('pw')
+    return redirect("/")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
 
-
     if request.method == "POST":
         users = data_manager.read_user_info()
         message = ""
-        username = request.form["user"]
-        pw = request.form["pw"]
-        salt = bcrypt.gensalt()
-        hashed = bcrypt.hashpw(pw, salt)
+        user = request.form['user']
+        password = request.form['pw']
+        #salt = bcrypt.gensalt()
+        #hashed = bcrypt.hashpw(pw, salt)
         username_list = [username[1] for username in users]
-
-        if username in username_list:
-            if bcrypt.checkpw(pw, hashed):
+        password_list = [password[3] for password in users]
+        if user in username_list:
+            #if bcrypt.checkpw(pw, hashed):
+            index = username_list.index(user)
+            if password_list[index] == password:
+                session['username'] = request.form['user']
+                session['pw'] = request.form['pw']
                 message = "Login successful!"
+                #time.sleep(1.5)
+                return redirect("/")
             else:
                 message = "Incorrect username or password!"
         else:
