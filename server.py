@@ -59,9 +59,12 @@ def vote_answer(answer_id, question_id):
     return redirect("/question/<question_id>")
 
 
-@app.route("/vote/<int:question_id>", methods=["POST"])
-def vote(question_id):
+@app.route("/vote/<int:question_id>/<int:user_id>", methods=["POST"])
+def vote(question_id, user_id):
     if request.form.get("up", "valami") == "up":
+        old_reputation= data_manager.read_reputation(user_id)[0][0]
+        new_reputation = old_reputation + 5
+        data_manager.update_reputation(new_reputation, user_id)
         vote_update_plus(question_id, "questions")
     elif request.form["down"] == "down":
         vote_update_minus(question_id, "questions")
