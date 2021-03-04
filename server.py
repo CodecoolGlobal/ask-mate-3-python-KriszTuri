@@ -2,8 +2,6 @@ from flask import Flask, flash, render_template, request, redirect, session, esc
 from data_manager import save_user, accept_answer
 import data_manager
 import os
-from list_breaker import list_sorter, view_number_adder
-from list_breaker import view_number_minuser, cut_out_for_edit
 
 
 app = Flask(__name__)
