@@ -150,8 +150,11 @@ def render_main_page():
 
 @app.route("/edit_question/<question_id>", methods=["GET", "POST"])
 def edit_question(question_id):
+    if session:
+        logged_in = True
+        username = session["username"]
     question = data_manager.get_que(question_id)
-    return render_template("edit_question.html", id=question_id, question=question)
+    return render_template("edit_question.html", id=question_id, question=question, username=username)
 
 
 # submit new question
