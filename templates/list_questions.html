@@ -30,7 +30,7 @@
                     <b><a href="/users">Our Users</a></b>
                 </td>
                 <td>
-                    <a href="/tags">Tags</a>
+                    <b><a href="/tags">Tags</a></b>
                 </td>
                 <td>
                     <form action="/like">
@@ -38,6 +38,19 @@
                     </form>  
                 </td>
             </tr>
+        </table>
+        <table class="signup">
+            {% if logged_in  %}
+            <tr>
+                <td><p><b><a href="{{url_for('user',user_id=user_id)}}">{{username}}</a> / <a href="/logout">Logout</a></b></p></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td>
+                    <b><a href="/registration">Sign Up</a>/<a href="/login">Sign In</a></b>
+                </td>
+            </tr>
+            {% endif %}
         </table>
         <p>This is the page of the questions posted by our users. <a href="/tags">Question Tags</a></p>
         <p>If you'd like to, you can sort them by title, submission time, message, or the number of views and votes!</p>
@@ -89,11 +102,11 @@
                         {% if i[2] == q[0] %}
                             <!--Is it good?-->
                         <!--<a  href="/delete_tag/{{i[0]}}"><button type="button" class="tags">× {{i[1]}}</button></a>-->
-                        <div>
+                        <div class="rounded">
                             {% if user_id == q[7] %}
-                            <a  href="/delete_tag/{{i[0]}}"><button type="button" class="tags">×</button></a>
+                                <a href="/delete_tag/{{i[0]}}">×</a>
                             {%endif%}
-                            <label class="tags"> {{i[1]}} </label>
+                            <label>{{i[1]}}</label>
                         </div>
                         {% endif %}
                     {% endfor %}

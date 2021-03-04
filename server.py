@@ -15,15 +15,22 @@ def list_questions(sorted='vote_number', sort='DESC'):
     tags = data_manager.get_all_comment("tags")
     user_id = 0
     logged_in = False
+    username= ""
     if session:
         logged_in = True
         user_id = session["user_id"]
-    return render_template("list_questions.html", logged_in=logged_in, questions=questions, tags=tags, user_id=user_id)
+        username= session["username"]
+    return render_template("list_questions.html", logged_in=logged_in, questions=questions, tags=tags, user_id=user_id, username=username)
 
 
 @app.route("/about")
 def about_page():
-    return render_template("about.html")
+    logged_in = False
+    username= ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    return render_template("about.html", logged_in=logged_in, username=username)
 
 
 @app.route("/question/<index_of_que>/<user_id>", methods=['GET', 'POST'])
@@ -33,13 +40,16 @@ def question_write(index_of_que, user_id):
     question_comments = data_manager.get_all_comment("comments_questions")
     answers = data_manager.get_all_answers(index_of_que)
     answer_comments = data_manager.get_all_comment("comments_answers")  # session['id'] # itt kéne ez a cucc, de
+    logged_in = False
+    username= ""
     if session:
         logged_in = True
         signed_id = session["user_id"]
+        username = session["username"]
     else:
         logged_in = False
         signed_id = 0
-    return render_template("answers.html", logged_in=logged_in, answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
+    return render_template("answers.html", username=username, logged_in=logged_in, answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
@@ -133,6 +143,7 @@ def like_button():
 def render_main_page():
     username = ""
     user_id = 13413134314141241231232131231253531213123123
+    logged_in = False
     if session:
         logged_in = True
         username = session["username"]
@@ -148,11 +159,13 @@ def render_main_page():
 
 @app.route("/edit_question/<question_id>", methods=["GET", "POST"])
 def edit_question(question_id):
+    logged_in = False
+    username= ""
     if session:
         logged_in = True
         username = session["username"]
     question = data_manager.get_que(question_id)
-    return render_template("edit_question.html", id=question_id, question=question, username=username)
+    return render_template("edit_question.html", id=question_id, question=question, username=username, logged_in=logged_in)
 
 
 # submit new question
@@ -258,7 +271,12 @@ def search_input():
 
 @app.route("/contact")
 def render_contact_page():
-    return render_template("contact_us.html", logged_in=False)
+    logged_in = False
+    username= ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    return render_template("contact_us.html", logged_in=logged_in, username=username)
 
 
 @app.route("/delete_tag/<id>")
@@ -400,14 +418,15 @@ def login():
         message = ""
         username = request.form['user']
         password = request.form['pw']
-        correct_pw_database = data_manager.get_pw(username)
-        correct_pw = correct_pw_database[0][0]
-        hashed_pw = bcrypt.hashpw(correct_pw.encode('utf-8'), bcrypt.gensalt())
+
         user_id_list = [user_id[0] for user_id in users]
         username_list = [username[1] for username in users]
 
         if username in username_list:
             index = username_list.index(username)
+            correct_pw_database = data_manager.get_pw(username)
+            correct_pw = correct_pw_database[0][0]
+            hashed_pw = bcrypt.hashpw(correct_pw.encode('utf-8'), bcrypt.gensalt())
             if bcrypt.checkpw(password.encode('utf-8'), hashed_pw):
                 user_id_index = user_id_list[index]
                 session['username'] = request.form['user']
@@ -424,7 +443,12 @@ def login():
 @app.route("/users")
 def list_users():
     users = data_manager.read_user_info()
-    return render_template("users_list.html", users=users, logged_in=True)
+    logged_in = False
+    username= ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    return render_template("users_list.html", users=users, logged_in=logged_in,username=username)
 
 
 @app.route("/user/<user_id>")
@@ -449,8 +473,13 @@ def accept(answer_id, question_id, user_id):
 
 @app.route("/tags")
 def tags_page():
+    logged_in = False
+    username= ""
+    if session:
+        logged_in = True
+        username = session["username"]
     tags = data_manager.tag_counter()
-    return render_template("tags_page.html", tags=tags)
+    return render_template("tags_page.html", tags=tags, logged_in=logged_in, username=username)
 
 
 if __name__ == "__main__":

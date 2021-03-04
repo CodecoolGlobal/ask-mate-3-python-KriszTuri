@@ -25,7 +25,7 @@
                     <b><a href="/">Main Page</a></b>
                 </td>
                 <td>
-                    <a href="/tags">Tags</a>
+                    <b><a href="/tags">Tags</a></b>
                 </td>
                      <td>
                     <form action="/like">
@@ -34,6 +34,19 @@
                 </td>
             </tr>
       </table>
+      <table class="signup">
+        {% if logged_in  %}
+        <tr>
+            <td><p><b><a href="{{url_for('user',user_id=user_id)}}">{{username}}</a> / <a href="/logout">Logout</a></b></p></td>
+        </tr>
+        {% else %}
+        <tr>
+            <td>
+                <b><a href="/registration">Sign Up</a>/<a href="/login">Sign In</a></b>
+            </td>
+        </tr>
+        {% endif %}
+    </table>
 
                   <hr>
           <br>
@@ -45,25 +58,25 @@
         {% if not logged_in %}
         <p>You have no permission, please log in!</p>
       {% elif logged_in %}
-            <table>
+            <table style="width: 100%;">
             <tr>
                 <th>
-                    username
+                    <p>username</p>
                 </th>
                    <th>
-                    Registration Date
+                    <p>Registration Date</p>
                 </th>
                    <th>
-                    Asked Questions
+                    <p>Asked Questions</p>
                 </th>
                    <th>
-                    Count of Answers
+                    <p>Count of Answers</p>
                 </th>
                    <th>
-                    Count of Comments
+                    <p>Count of Comments</p>
                 </th>
                    <th>
-                    Reputation
+                   <p>Reputation</p> 
                 </th>
             </tr>
         <tr>
@@ -73,19 +86,19 @@
                     </td>
                 <td>
                      {% set time=data[5]|string %}
-                    {{ time[:16] }}
+                  <p>{{ time[:16] }}</p>  
                     </td>
                    <td>
-                    {{ data[6] }}
+                   <p>{{ data[6] }}</p> 
                     </td>
                    <td>
-                    {{ data[7] }}
+                    <p>{{ data[7] }}</p>
                     </td>
                    <td>
-                    {{ data[8] }}
+                    <p>{{ data[8] }}</p>
                     </td>
                    <td>
-                    {{ data[4] }}
+                    <p>{{ data[4] }}</p>
                     </td>
                 </tr>
                 {% endfor %}

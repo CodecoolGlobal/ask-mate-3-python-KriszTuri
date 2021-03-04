@@ -5,9 +5,11 @@
 	background-color: lightgrey
 }
 
-a{
+a {
 	text-decoration: none;
-    color: black;
+	text-shadow: 2px 2px 8px #000000; 
+	color: black;
+	font-size: 20px;
 }
 
 td {
@@ -46,3 +48,10 @@ p {
     background-color: lightgrey
   }
   
+  .like_button{
+    font-size: medium;
+    font-family: "Agency FB";
+    background-color: yellow;
+    border-color: midnightblue;
+    border-radius: 6px;
+  }

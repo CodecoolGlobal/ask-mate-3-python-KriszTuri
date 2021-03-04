@@ -19,6 +19,17 @@ p {
     color: black;
 	text-shadow: 2px 2px 8px #000000; 
 }
+label {
+	font-size: 20px;
+	  color: black;
+	  text-shadow: 2px 2px 8px #000000; 
+  }
+.rounded {
+	border-radius: 25px;
+	background:#74ad5a;
+	width:max-content;
+	padding: 5px;
+}
 
 li{
   font-size: large;
