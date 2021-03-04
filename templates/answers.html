@@ -35,8 +35,9 @@
     </tr>
 </table>
 <br><br>
-
+    
     {%for item in question%}
+        {% if logged_in %}
             <!--edit, delete-->
             <table style="width: 3cm;">
                 <tr>
@@ -53,6 +54,7 @@
                     </td>
                 </tr>
             </table>
+    {% endif %}
         <!--question, views, votes-->
         <table style="width: 100%;">
                 <tr>
@@ -81,7 +83,9 @@
                     <td>
                         <p><u>Answers:</u></p>
                         <form action="{{url_for('new_answer', question_id=id, user_id=creater_id)}}" method="POST">
+                            {% if logged_in %}
                             <button type="submit" class = "upvote" name="New answer">Send Answer</button>
+                            {% endif %}
                         </form>
                         {%for item in answers%}
     
@@ -121,10 +125,12 @@
                     </td>
 
                     <td>
+                        {% if logged_in %}
                         <!--delete answer-->
                         <form action="{{ url_for('answerdelete', answer_id=item[0], index_of_que=item[3]) }}" method="POST">
                             <button type="submit" class = "downvote">Delete Answer</button>
-                        </form>                          
+                        </form>
+                        {% endif %}                          
                     </td>
                 </tr>
             </table>
@@ -134,7 +140,9 @@
                     
                     <td>
                         Replies on answer:<br>
+                        {% if logged_in %}
                         <form action="/new_comment_answer/{{ id }}/{{ user_id }}" method="GET"><input type="submit" class="upvote" value="Reply to answer"></form>
+                        {% endif %}
                         {% for item2 in answer_comments %}
                             {% if item2[1] == item[0] %}
                             <a href="{{url_for('edit_comment_answer', id=item2[0])}}"><p>&#x270E;</a> {{item2[2]}}</p>
@@ -168,9 +176,11 @@
             {% endfor %}
             <br>
             <tr>
+                {% if logged_in %}
                 <td>
                     <i><p>Have something to say?</p></i> <form action="/new_comment_question/{{ id }}/{{ user_id }}" method="GET"><input type="submit" class="send" value="Add comment"></form>
                 </td>
+                {% endif %}
             </tr>
             
             
