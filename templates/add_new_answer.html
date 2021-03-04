@@ -39,7 +39,7 @@
         <p>This is the page where you can add a new answer.</p>
         <br>
         <p><i>Enter your answer here:</i></p>
-        <form action="{{url_for('add_new_answer', question_id=question_id)}}" method="POST" >
+        <form action="{{url_for('add_new_answer', question_id=question_id, user_id=user_id)}}" method="POST" >
             <textarea class="new_answer_box" name="new_answer" aria-label="[class]=" rows="4" cols="60"></textarea>
                 <input type="submit" value="Send" class="send">
         </form>

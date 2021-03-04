@@ -51,6 +51,7 @@ def question_write(index_of_que, user_id):
     print("\n")
     answer_comments = get_all_comment("comments_answers")
     # user_id = session['id'] # itt kéne ez a cucc, de 
+    print(user_id)
     return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
 
 
@@ -227,9 +228,10 @@ def add_new_answer(question_id, user_id):
     new_answer.append(str(question_id))
     new_answer.append(answer_message)
     new_answer.append("")
-    new_answer.append(user_id)
+    new_answer.append(int(user_id))
+    print(new_answer)
     save_answers(new_answer)
-    return redirect(f"/question/{question_id}")
+    return redirect(f"/question/{question_id}/{user_id}")
 
 
 @app.route("/new_answer/<question_id>/<user_id>", methods=["POST"])
