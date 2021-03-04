@@ -143,9 +143,11 @@ def like_button():
 @app.route("/")
 def render_main_page():
     username = ""
+    print(session)
     if session:
         logged_in = True
         username = session["username"]
+
     else:
         logged_in = False
     like_data_file = open("sample_data/site_likes.txt", "r")
@@ -386,11 +388,11 @@ def registration():
         username = request.form["new_user"]
         email = request.form["new_email"] 
         pw = request.form["new_user_pw"]
-        hashed_pw = hash_password(pw)
+        #hashed_pw = hash_password(pw)
         username_list = [username[1] for username in users]
         if username not in username_list or not username_list:
             message = "Registration successful!"
-            save_user(username,email,hashed_pw)
+            save_user(username,email,pw)
         else:
             message = "Username or email already taken!"
     return render_template("reg.html", message = message)
@@ -400,6 +402,7 @@ def registration():
 def logout():
     session.pop('username')
     session.pop('pw')
+    session.pop('user_id')
     return redirect("/")
 
 
@@ -414,14 +417,18 @@ def login():
         password = request.form['pw']
         #salt = bcrypt.gensalt()
         #hashed = bcrypt.hashpw(pw, salt)
+        user_id_list = [user_id[0] for user_id in users]
         username_list = [username[1] for username in users]
         password_list = [password[3] for password in users]
         if user in username_list:
             #if bcrypt.checkpw(pw, hashed):
             index = username_list.index(user)
             if password_list[index] == password:
+                user_id_index = user_id_list[index]
                 session['username'] = request.form['user']
                 session['pw'] = request.form['pw']
+                session['user_id'] = user_id_index
+                print(session)
                 message = "Login successful!"
                 #time.sleep(1.5)
                 return redirect("/")
