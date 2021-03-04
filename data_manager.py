@@ -52,42 +52,6 @@ def vote_update_minus(id, table_name):
                    {"table_name": AsIs(table_name), "id": id})
 
 
-''' Read and Write CSV files'''
-
-'''# Read CSV files to NestedList
-# Need file name, because it could handle all CSV file
-# File_name needs to contains the ".txt" too'''
-
-
-def read_csv_files(file_name, separate=';'):
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(file_name))
-    QUESTION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sample_data', file_name)
-    # list for converting to a nested list
-    converted_file = []
-    with open(QUESTION_FILE_PATH, "r") as csv_file:
-        lines = csv_file.readlines()
-        # add lines to the list and split unusefull characters
-        for elements in lines:
-            converted_file.append(elements.replace("\n", "").split(separate))
-    # return nested list
-    return converted_file
-
-
-'''function for write to CSV file
-#Am i need to make headers?????'''
-
-
-def convert_to_csv_file(file_name, list_to_convert, separate=';'):
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(file_name))
-    QUESTION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sample_data', file_name)
-    with open(QUESTION_FILE_PATH, "w") as CSV_file:
-        # loop what makes the csv format
-        line = ""
-        for items in list_to_convert:
-            line = separate.join(items)
-            CSV_file.write(line + "\n")
-
-
 def list_last_5():
     cursor = get_alonescursor()
     cursor.execute("SELECT * from questions order by id desc limit 5;")

@@ -39,4 +39,3 @@ def cut_out_for_edit(questions, ind_to_cut):
             list_of_que.append(item[4])
             list_of_que.append(item[5])
     return list_of_que
-            
