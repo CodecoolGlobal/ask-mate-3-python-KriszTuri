@@ -109,7 +109,9 @@
                             <button type="submit" name="down" class="downvote">▼</button>
                         </form>
                         {% endif %}
-                        {% if signed_id == creater_id | int %}
+                        {% if item[7] == true %}
+                        <p>Accepted by question owner</p>
+                        {% elif signed_id == creater_id | int %}
                         <form action="/accept/{{ item[0] }}/{{ item[3] }}/{{ creater_id }}">
                             <button type="submit" name="accept" class="accept">✓</button>
                         </form>
