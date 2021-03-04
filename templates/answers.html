@@ -111,7 +111,7 @@
                         {% endif %}
                         {% if signed_id == creater_id | int %}
                         <form action="/accept/{{ item[0] }}/{{ item[3] }}/{{ creater_id }}">
-                            <button type="submit" name="accept" class="accept">✓</button>
+                            <button type="submit" name="accept" class="send" style="color: black;">✓</button>
                         </form>
                         {%endif%}
                         <p>votes: {{item[2]}}</p>
