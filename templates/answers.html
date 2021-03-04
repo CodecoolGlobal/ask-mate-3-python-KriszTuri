@@ -155,40 +155,37 @@
             </table>
             <br>
 
-    <!-- First answer which has a most like(sry for my english)-->
-    <table style="width: 100%;">
-        <tr>
-            <th style="text-align: left;">
-                Comments on this post:
-            </th>
-        </tr>
-        <tr>
+        <!-- First answer which has a most like(sry for my english)-->
+        <table style="width: 100%;">
 
 
-
-                {% for item2 in question_comments %}
+            {% for item2 in question_comments %}
                 {% if item2[2] == item[0] %}
-                <tr>
-                    <td> 
-                        <a href="{{url_for('edit_comment_question', id=item2[0])}}"><p>&#x270E;</a> {{item2[1]}}</p>
-                    </td>
-                </tr>
+                    <tr>
+                            <td> 
+                                <a href="{{url_for('edit_comment_question', id=item2[0])}}"><p>&#x270E;</a> {{item2[1]}}</p>
+                            </td>
+                    </tr>
 
                 {% endif %}
             {% endfor %}
-            <br>
+                <br>
+                
+
+        
+    {% endfor %}
             <tr>
-                {% if logged_in %}
+                <th style="text-align: left;">
+                    Comments on this post:
+                </th>
+            </tr>
+            <tr>
+            {% if logged_in %}
                 <td>
                     <i><p>Have something to say?</p></i> <form action="/new_comment_question/{{ id }}/{{ user_id }}" method="GET"><input type="submit" class="send" value="Add comment"></form>
                 </td>
-                {% endif %}
+            {% endif %}
             </tr>
-            
-            
-
-        </tr>
-        {% endfor %}
-    </table>
+    </table>    
     </body>
 </html>
