@@ -46,13 +46,13 @@ def question_write(index_of_que, user_id):
     question = get_que(index_of_que)
     question_comments = get_all_comment("comments_questions")
     answers = get_all_answers(index_of_que)
-    print("\n")
-    print(answers)
-    print("\n")
     answer_comments = get_all_comment("comments_answers")
     # user_id = session['id'] # itt kéne ez a cucc, de 
-    print(user_id)
-    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
+    if session:
+        logged_in = True
+    else:
+        logged_in = False
+    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, logged_in=logged_in)
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
