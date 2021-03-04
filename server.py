@@ -9,14 +9,14 @@ from data_manager import view_num_add, delete_question, save_answers, delete_ans
 from data_manager import get_search_que, get_tags, give_tag, delete_tag_
 from data_manager import get_search_ans, save_answers, get_all_comment
 from data_manager import save_comm_ans, save_comm_que
-from data_manager import save_user
+from data_manager import save_user, accept_answer
 from data_manager import hash_password, verify_password
 import data_manager
 import os, time
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
 import datetime
-import bcrypt
+# import bcrypt
 
 
 
@@ -29,7 +29,9 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def list_questions(sorted='vote_number', sort='DESC'):
     questions = get_all(sorted, sort)
     tags = get_all_comment("tags")
-    user_id = session[""]
+    user_id = 8721544
+    if session:
+        user_id = session["user_id"]
     return render_template("list_questions.html", questions=questions, tags=tags, user_id=user_id)
 
 
@@ -45,12 +47,8 @@ def question_write(index_of_que, user_id):
     question_comments = get_all_comment("comments_questions")
     answers = get_all_answers(index_of_que)
     answer_comments = get_all_comment("comments_answers")
-<<<<<<< HEAD
-    user_id = session['id'] # itt kéne ez a cucc, de 
-    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, user_id=user_id)
-=======
+    # user_id = session['id'] # itt kéne ez a cucc, de 
     return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
->>>>>>> origin/branch1
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
@@ -147,13 +145,14 @@ def render_main_page():
     if session:
         logged_in = True
         username = session["username"]
+        user_id = session["user_id"]
 
     else:
         logged_in = False
     like_data_file = open("sample_data/site_likes.txt", "r")
     like_number = like_data_file.read()
     list_of_questions = list_last_5()
-    return render_template("index.html", likes=like_number, list = list_of_questions, logged_in = logged_in, username=username)
+    return render_template("index.html", likes=like_number, list=list_of_questions, logged_in=logged_in, username=username, user_id=user_id)
 
 
 @app.route("/edit_question/<question_id>", methods=["GET", "POST"])
@@ -446,18 +445,22 @@ def list_users():
 
 
 @app.route("/user/<user_id>")
-<<<<<<< HEAD
-def user_page(user_id):
-    pass
-=======
-def user_profile_page(user_id):
+def user(user_id):  # original def name user_profile_page
     questions = data_manager.read_questions()
     users = data_manager.read_user_info()
     answers = data_manager.read_answers()
     question_comments = data_manager.read_question_comments()
     answer_comments = data_manager.read_answer_comments()
+    print("\n")
+    print(user_id)
+    print("\n")
     return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
->>>>>>> origin/branch1
+
+
+@app.route("/accept/<answer_id>/<question_id>/<user_id>")
+def accept(answer_id, question_id, user_id):
+    accept_answer(answer_id)
+    return redirect(f"/question/{question_id}/{user_id}")
 
 
 if __name__ == "__main__":
@@ -465,5 +468,3 @@ if __name__ == "__main__":
         debug=True,  # Allow verbose error reports
         port=5000  # Set custom port
         )
-
-

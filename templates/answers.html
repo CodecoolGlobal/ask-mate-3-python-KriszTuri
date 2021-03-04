@@ -90,6 +90,7 @@
             <table style="width: 90%;" class="answers_to_question">
                 <tr>
                     <td><br>
+                        {% if logged_in %}
                         <form action="{{ url_for('vote_answer',  answer_id=item[0], question_id=item[3], user_id=item[6],  creater_id=question[0][7])}}"  method="POST">
                             <input type="text" name="up" value="up" hidden>
                             <button type="submit" class="upvote">▲</button>
@@ -98,6 +99,13 @@
                             <input type="text" name="down" value="down" hidden>
                             <button type="submit" name="down" class="downvote">▼</button>
                         </form>
+                        {% if user_id == question[6] and item %}
+                        <form action="{{ url_for('accept', answer_id=item[0], question_id=item[3], user_id=user_id) }}">
+                            <input type="text" name="accept" value="accept" hidden>
+                            <button type="submit" name="accept" class="accept">✓</button>
+
+                        </form>
+                        {% endif %}
                         <p>votes: {{item[2]}}</p>
                     </td>
                     <td>                

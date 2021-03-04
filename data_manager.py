@@ -269,3 +269,8 @@ def read_answer_comments():
     cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_answers.title, comments_answers.user_id FROM questions JOIN answers ON(questions.id = answers.question_id) JOIN comments_answers ON(answers.id = comments_answers.answer_id)" )
     answer_comments = cursor.fetchall()
     return answer_comments
+
+
+def accept_answer(answer_id):
+    cursor = get_alonescursor()
+    cursor.execute("UPDATE answers SET accept = TRUE WHERE id = %(answer_id)s", {"answer_id": answer_id})
