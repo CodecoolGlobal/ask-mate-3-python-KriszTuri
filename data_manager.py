@@ -203,9 +203,9 @@ def update_reputation(new_reputation, user_id):
                    {'new_reputation': new_reputation, 'user_id': user_id})
 
 
-def read_reputation_and_to_answer_accept( question_id):
+def read_reputation_and_to_answer_accept(question_id, answer_id):
     cursor = get_alonescursor()
-    cursor.execute("SELECT reputation, users_info.id FROM answers JOIN users_info ON(answers.user_id=users_info.id) WHERE question_id = %(question_id)s", {'question_id': question_id})
+    cursor.execute("SELECT reputation, answers.user_id FROM answers JOIN users_info ON(answers.user_id=users_info.id) WHERE question_id = %(question_id)s AND answers.id=%(answer_id)s" , {'question_id': question_id, 'answer_id': answer_id})
     reputation_ans_accept = cursor.fetchall()
     return reputation_ans_accept
 
