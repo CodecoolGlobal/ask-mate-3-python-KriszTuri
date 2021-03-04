@@ -53,23 +53,35 @@ def question_write(index_of_que, user_id):
 >>>>>>> origin/branch1
 
 
-@app.route("/vote_answer/<int:answer_id>/<question_id>", methods=["GET", "POST"])
-def vote_answer(answer_id, question_id):
+@app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
+def vote_answer(answer_id, question_id, user_id, creater_id):
     if request.method == "POST":
         if request.form.get("up", "valami") == "up":
+            old_reputation = data_manager.read_reputation(user_id)[0][0]
+            new_reputation = old_reputation + 10
+            data_manager.update_reputation(new_reputation, user_id)
             vote_update_plus(answer_id, "answers")
         elif request.form.get("down", "valami") == "down":
+            old_reputation = data_manager.read_reputation(user_id)[0][0]
+            new_reputation = old_reputation -2
+            data_manager.update_reputation(new_reputation, user_id)
             vote_update_minus(answer_id, "answers")
         view_num_minus(question_id)
-        return redirect(f"/question/{question_id}")
-    return redirect("/question/<question_id>")
+        return redirect(f"/question/{question_id}/{creater_id}")
+    return redirect("/question/<question_id>/<creater_id>")
 
 
-@app.route("/vote/<int:question_id>", methods=["POST"])
-def vote(question_id):
+@app.route("/vote/<int:question_id>/<int:user_id>", methods=["POST"])
+def vote(question_id, user_id):
     if request.form.get("up", "valami") == "up":
+        old_reputation = data_manager.read_reputation(user_id)[0][0]
+        new_reputation = old_reputation + 5
+        data_manager.update_reputation(new_reputation, user_id)
         vote_update_plus(question_id, "questions")
     elif request.form["down"] == "down":
+        old_reputation = data_manager.read_reputation(user_id)[0][0]
+        new_reputation = old_reputation - 2
+        data_manager.update_reputation(new_reputation, user_id)
         vote_update_minus(question_id, "questions")
     referer = request.headers.get("Referer")
     return redirect(referer)
@@ -259,7 +271,7 @@ def search_input():
 
 @app.route("/contact")
 def render_contact_page():
-    return render_template("contact_us.html")
+    return render_template("contact_us.html", logged_in=False)
 
 
 @app.route("/delete_tag/<id>")

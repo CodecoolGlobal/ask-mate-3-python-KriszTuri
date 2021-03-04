@@ -46,7 +46,8 @@
         <br>
         <p><b>Facebook:</b></p>
         <p>We don't have Facebook, We don't sell our data!</p>
-
-
+{% if not logged_in %} }}
+<script> alert('\t\t\tYou are not logged in.\n\t\t\tPlease sign in!\n\n And push the like button at the top right corner!')</script>
+{% endif %}
 </body>
 </html>
