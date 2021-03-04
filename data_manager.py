@@ -245,6 +245,7 @@ def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
+
 def read_question_comments():
     cursor = get_alonescursor()
     cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_questions.title, comments_questions.user_id FROM questions JOIN comments_questions ON(questions.id = comments_questions.question_id)")
