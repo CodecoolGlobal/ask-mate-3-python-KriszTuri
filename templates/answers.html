@@ -38,6 +38,7 @@
     
     {%for question_item in question%}
             <!--edit, delete-->
+            {% if signed_id == creater_id | int %}
             <table style="width: 3cm;">
                 <tr>
                     <td>
@@ -54,6 +55,7 @@
                     </td>
                 </tr>
             </table>
+            {%endif%}
         <!--question, views, votes-->
         <table style="width: 100%;">
                 <tr>
