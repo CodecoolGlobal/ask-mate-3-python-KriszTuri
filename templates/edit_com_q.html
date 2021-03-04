@@ -5,9 +5,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Question Comment</title>
 </head>
 <body>
+        <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <b><a href="/users">Our Users</a></b>
+                </td>
+            <td>
+                <a href="/tags">Tags</a>
+            </td>
+
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  {% block likes %}<b>{{ likes }}</b>{% endblock %}
+                    </form>
+                </td>
+            </tr>
+        </table>
     <form action="{{url_for('edit_quest_com_save', id=question[0])}}" method="POST">
         <textarea id="saved_com" name="saved_com">{{question[1]}}</textarea>
         <input type="submit" id="save" value="Save">
