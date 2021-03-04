@@ -200,9 +200,9 @@ def add_new_answer(question_id, user_id, creater_id):
     new_answer.append(str(question_id))
     new_answer.append(answer_message)
     new_answer.append("")
-    new_answer.append(user_id)
+    new_answer.append(int(user_id))
     data_manager.save_answers(new_answer)
-    return redirect(f"/question/{question_id}/{creater_id}")
+    return redirect(f"/question/{question_id}/{user_id}")
 
 
 @app.route("/new_answer/<question_id>/<user_id>/<creater_id>", methods=["POST"])

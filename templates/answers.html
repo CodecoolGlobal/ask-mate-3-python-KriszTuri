@@ -77,7 +77,7 @@
                 <tr>
                     <td>
                         <p><u>Answers:</u></p>
-                        <form action="{{url_for('new_answer', question_id=id, user_id=signed_id, creater_id=creater_id)}}" method="POST">
+                        <form action="{{url_for('new_answer', question_id=id, user_id=creater_id)}}" method="POST">
                             <button type="submit" class = "upvote" name="New answer">Send Answer</button>
                         </form>
                         {%for item in answers%}
@@ -99,12 +99,13 @@
                             <input type="text" name="down" value="down" hidden>
                             <button type="submit" name="down" class="downvote">▼</button>
                         </form>
-                        {% if user_id == question[6] and item %}
-                        <form action="{{ url_for('accept', answer_id=item[0], question_id=item[3], user_id=user_id) }}">
-                            <input type="text" name="accept" value="accept" hidden>
-                            <button type="submit" name="accept" class="accept">✓</button>
+                            {% if user_id == question[6] and item %}
+                            <form action="{{ url_for('accept', answer_id=item[0], question_id=item[3], user_id=user_id) }}">
+                                <input type="text" name="accept" value="accept" hidden>
+                                <button type="submit" name="accept" class="accept">✓</button>
 
-                        </form>
+                            </form>
+                            {%endif%}
                         {% endif %}
                         <p>votes: {{item[2]}}</p>
                     </td>
