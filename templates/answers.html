@@ -162,10 +162,8 @@
         </tr>
         <tr>
 
-
-                
                 {% for item2 in question_comments %}
-                {% if item2[2] == item[0] %}
+                {% if item2[2] == question_item[0] %}
                 <tr>
                     <td> 
                         <a href="{{url_for('edit_comment_question', id=item2[0])}}"><p>&#x270E;</a> {{item2[1]}}</p>
