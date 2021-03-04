@@ -59,16 +59,14 @@
             <th>Question</th>
             <th>Tags</th>
             <th>Image</th>
-        {% for row in range(questions|length) %}
-        <tr>
-            {%for col in range(questions[row]|length) %}
-                {% if col == 0 %}
-                <td>
-                    <form action="{{url_for('vote', question_id=questions[row][0])}}" method="POST">
+           {% for q in questions %}
+               <tr>
+                    <td>
+                    <form action="{{url_for('vote', question_id=q[0], user_id=q[7])}}" method="POST">
                         <input type="text" name="up" value="up" hidden>
                         <button type="submit" class="upvote">▲</button>
                     </form>
-                    <form action="{{url_for('vote', question_id=questions[row][0])}}" method="POST">
+                    <form action="{{url_for('vote', question_id=q[0], user_id=q[7])}}" method="POST">
                         <input type="text" name="down" value="down" hidden>
                         <button type="submit" class="downvote">▼</button>
                     </form>
@@ -76,23 +74,20 @@
                     
                 </td>
                 <!-- Link to answeres-->
-                {% elif col == 1 %}<!--Time module-->
-                <td><a href="/question/{{questions[row][0]}}"> {{ questions[row][col] }}</a></td>
-                {% elif col == 2 or col == 3%}
-                <td><a href="/question/{{questions[row][0]}}">{{ questions[row][col] }}</a></td>
-                {% elif col == 4%}
-                <td><a href="/question/{{questions[row][0]}}"><h3>{{ questions[row][col] }}</a></h3></td>
-                {% elif col == 5 %}
-                <td style="text-align: center;">{% for i in tags %}
-                        {% if i[2] == questions[row][0] %}
+                <td><a href="/question/{{q[0]}}/{{q[7]}}"> {{ q[1]}}</a></td>
+                <td><a href="/question/{{q[0]}}/{{q[7]}}">{{ q[2]}}</a></td>
+                <td><a href="/question/{{q[0]}}/{{q[7]}}"><h3>{{ q[3] }}</h3></a></td>
+                   <td><a href="/question/{{q[0]}}/{{q[7]}}"><h3>{{ q[4] }}</h3></a></td>
+
+                   <td style="text-align: center;">
+                    {% for i in tags %}
+                        {% if i[2] == q[0] %}
+                            <!--Is it good?-->
                         <a  href="/delete_tag/{{i[0]}}"><button type="button" class="tags">× {{i[1]}}</button></a>
                         {% endif %}
                     {% endfor %}
                 </td>
-                {% elif col == 6 %}
-                <td><img src="static/Picture/questions_pics/{{ questions[row][0] }}.jpeg" onerror="this.style.display='none'" style="width: 50px;" ></td>
-                {% endif %}
-            {%endfor%}
+                <td><img src="static/Picture/questions_pics/{{ q[0] }}.jpeg" onerror="this.style.display='none'" style="width: 50px;" ></td>
         </tr>
         {% endfor %}
         </table>

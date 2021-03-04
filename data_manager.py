@@ -220,6 +220,18 @@ def read_user_info():
     return result
 
 
+def read_reputation(user_id):
+    cursor = get_alonescursor()
+    cursor.execute("SELECT reputation FROM users_info WHERE %(user_id)s=id  ", {'user_id': user_id})
+    reputation_and_user = cursor.fetchall()
+    return reputation_and_user
+
+
+def update_reputation(new_reputation, user_id):
+    cursor = get_alonescursor()
+    cursor.execute("UPDATE users_info SET reputation = %(new_reputation)s WHERE %(user_id)s = id", {'new_reputation': new_reputation, 'user_id': user_id})
+
+
 def read_questions():
     cursor = get_alonescursor()
     cursor.execute("SELECT * FROM questions")
@@ -234,6 +246,7 @@ def read_answers():
     return result
 
 ##PASSWORD HATCHING
+
 
 def hash_password(plain_text_password):
     # By using bcrypt, the salt is saved into the hash itself

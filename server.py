@@ -47,23 +47,35 @@ def question_write(index_of_que, user_id):
     return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
 
 
-@app.route("/vote_answer/<int:answer_id>/<question_id>", methods=["GET", "POST"])
-def vote_answer(answer_id, question_id):
+@app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
+def vote_answer(answer_id, question_id, user_id, creater_id):
     if request.method == "POST":
         if request.form.get("up", "valami") == "up":
+            old_reputation = data_manager.read_reputation(user_id)[0][0]
+            new_reputation = old_reputation + 10
+            data_manager.update_reputation(new_reputation, user_id)
             vote_update_plus(answer_id, "answers")
         elif request.form.get("down", "valami") == "down":
+            old_reputation = data_manager.read_reputation(user_id)[0][0]
+            new_reputation = old_reputation -2
+            data_manager.update_reputation(new_reputation, user_id)
             vote_update_minus(answer_id, "answers")
         view_num_minus(question_id)
-        return redirect(f"/question/{question_id}")
-    return redirect("/question/<question_id>")
+        return redirect(f"/question/{question_id}/{creater_id}")
+    return redirect("/question/<question_id>/<creater_id>")
 
 
-@app.route("/vote/<int:question_id>", methods=["POST"])
-def vote(question_id):
+@app.route("/vote/<int:question_id>/<int:user_id>", methods=["POST"])
+def vote(question_id, user_id):
     if request.form.get("up", "valami") == "up":
+        old_reputation = data_manager.read_reputation(user_id)[0][0]
+        new_reputation = old_reputation + 5
+        data_manager.update_reputation(new_reputation, user_id)
         vote_update_plus(question_id, "questions")
     elif request.form["down"] == "down":
+        old_reputation = data_manager.read_reputation(user_id)[0][0]
+        new_reputation = old_reputation - 2
+        data_manager.update_reputation(new_reputation, user_id)
         vote_update_minus(question_id, "questions")
     referer = request.headers.get("Referer")
     return redirect(referer)
@@ -253,7 +265,7 @@ def search_input():
 
 @app.route("/contact")
 def render_contact_page():
-    return render_template("contact_us.html")
+    return render_template("contact_us.html", logged_in=False)
 
 
 @app.route("/delete_tag/<id>")
@@ -377,6 +389,7 @@ def registration():
             message = "Username or email already taken!"
     return render_template("reg.html", message = message)
 
+
 @app.route('/logout')
 def logout():
     session.pop('username')
@@ -384,11 +397,11 @@ def logout():
     session.pop('user_id')
     return redirect("/")
 
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
-
     if request.method == "POST":
         users = data_manager.read_user_info()
         message = ""
@@ -432,7 +445,6 @@ def user_profile_page(user_id):
     question_comments = data_manager.read_question_comments()
     answer_comments = data_manager.read_answer_comments()
     return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
-
 
 
 if __name__ == "__main__":
