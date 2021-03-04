@@ -39,9 +39,6 @@ def question_write(index_of_que, user_id):
     else:
         logged_in = False
         signed_id = 0
-    print(signed_id)
-    print("\n")
-    print(question)
     return render_template("answers.html", logged_in=logged_in, answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
 
 
@@ -135,7 +132,6 @@ def like_button():
 @app.route("/")
 def render_main_page():
     username = ""
-    print(session)
     user_id = 13413134314141241231232131231253531213123123
     if session:
         logged_in = True
