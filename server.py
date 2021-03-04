@@ -13,12 +13,11 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def list_questions(sorted='vote_number', sort='DESC'):
     questions = data_manager.get_all(sorted, sort)
     tags = data_manager.get_all_comment("tags")
-    user_id = 8721544
+    user_id = 0
+    logged_in = False
     if session:
         logged_in = True
         user_id = session["user_id"]
-    else:
-        logged_in = False
     return render_template("list_questions.html", logged_in=logged_in, questions=questions, tags=tags, user_id=user_id)
 
 
@@ -40,6 +39,9 @@ def question_write(index_of_que, user_id):
     else:
         logged_in = False
         signed_id = 0
+    print(signed_id)
+    print("\n")
+    print(question)
     return render_template("answers.html", logged_in=logged_in, answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
 
 
