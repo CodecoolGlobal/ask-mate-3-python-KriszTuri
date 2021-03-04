@@ -65,6 +65,11 @@
             <td>
                 {% if message == "Login successful!" %}
                 <div style="color: green;">{{message}}</div>
+                <script>
+                    var timer = setTimeout(function() {
+                        window.location='/'
+                    }, 3000);
+                </script>
                 {% elif message == "User does not exist!" %}
                 <div style="color: red;">{{message}}</div>
                 {% elif message == "Incorrect username or password!" %}

@@ -9,10 +9,9 @@ from data_manager import view_num_add, delete_question, save_answers, delete_ans
 from data_manager import get_search_que, get_tags, give_tag, delete_tag_
 from data_manager import get_search_ans, save_answers, get_all_comment
 from data_manager import save_comm_ans, save_comm_que
-from data_manager import save_user, accept_answer
-from data_manager import hash_password, verify_password
+from data_manager import save_user, accept_answer, get_pw
 import data_manager
-import os, time
+import os, time, bcrypt
 from list_breaker import list_sorter, view_number_adder
 from list_breaker import view_number_minuser, cut_out_for_edit
 import datetime
@@ -390,12 +389,12 @@ def registration():
     if request.method == "POST":
         username = request.form["new_user"]
         email = request.form["new_email"] 
-        pw = request.form["new_user_pw"]
-        #hashed_pw = hash_password(pw)
+        password = request.form["new_user_pw"]
+
         username_list = [username[1] for username in users]
         if username not in username_list or not username_list:
             message = "Registration successful!"
-            save_user(username,email,pw)
+            save_user(username,email,password)
         else:
             message = "Username or email already taken!"
     return render_template("reg.html", message = message)
@@ -416,25 +415,22 @@ def login():
     if request.method == "POST":
         users = data_manager.read_user_info()
         message = ""
-        user = request.form['user']
+        username = request.form['user']
         password = request.form['pw']
-        #salt = bcrypt.gensalt()
-        #hashed = bcrypt.hashpw(pw, salt)
+        correct_pw_database = get_pw(username)
+        correct_pw = correct_pw_database[0][0]
+        hashed_pw = bcrypt.hashpw(correct_pw.encode('utf-8'), bcrypt.gensalt())
         user_id_list = [user_id[0] for user_id in users]
         username_list = [username[1] for username in users]
-        password_list = [password[3] for password in users]
-        if user in username_list:
-            #if bcrypt.checkpw(pw, hashed):
-            index = username_list.index(user)
-            if password_list[index] == password:
+
+        if username in username_list:
+            index = username_list.index(username)
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_pw):
                 user_id_index = user_id_list[index]
                 session['username'] = request.form['user']
                 session['pw'] = request.form['pw']
                 session['user_id'] = user_id_index
-                print(session)
                 message = "Login successful!"
-                #time.sleep(1.5)
-                return redirect("/")
             else:
                 message = "Incorrect username or password!"
         else:
