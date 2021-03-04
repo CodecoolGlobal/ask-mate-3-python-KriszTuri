@@ -52,42 +52,6 @@ def vote_update_minus(id, table_name):
                    {"table_name": AsIs(table_name), "id": id})
 
 
-''' Read and Write CSV files'''
-
-'''# Read CSV files to NestedList
-# Need file name, because it could handle all CSV file
-# File_name needs to contains the ".txt" too'''
-
-
-def read_csv_files(file_name, separate=';'):
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(file_name))
-    QUESTION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sample_data', file_name)
-    # list for converting to a nested list
-    converted_file = []
-    with open(QUESTION_FILE_PATH, "r") as csv_file:
-        lines = csv_file.readlines()
-        # add lines to the list and split unusefull characters
-        for elements in lines:
-            converted_file.append(elements.replace("\n", "").split(separate))
-    # return nested list
-    return converted_file
-
-
-'''function for write to CSV file
-#Am i need to make headers?????'''
-
-
-def convert_to_csv_file(file_name, list_to_convert, separate=';'):
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(file_name))
-    QUESTION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sample_data', file_name)
-    with open(QUESTION_FILE_PATH, "w") as CSV_file:
-        # loop what makes the csv format
-        line = ""
-        for items in list_to_convert:
-            line = separate.join(items)
-            CSV_file.write(line + "\n")
-
-
 def list_last_5():
     cursor = get_alonescursor()
     cursor.execute("SELECT * from questions order by id desc limit 5;")
@@ -138,12 +102,11 @@ def get_search_ans(search):
 
 
 def save_answers(line):
-    print("\n")
     print(line)
-    print("\n")
     cursor = get_alonescursor()
-    cursor.execute("UPDATE users_info SET answer_count = answer_count + 1 WHERE id = %(id)s ", {"id": int(line[5])})
-    cursor.execute("INSERT INTO answers (id, sub_time, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, %(submission_time)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);", {"id": line[0], "submission_time": line[1], "question_id": line[2], "message_": line[3],"image_name": str(line[4]), "user_id": line[5]})
+    cursor.execute("UPDATE users_info SET answer_count = answer_count + 1 WHERE id = %(id)s ", {"id": int(line[4])})
+    cursor.execute("INSERT INTO answers (id, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);", {"id": line[0], "question_id": line[1], "message_": line[2],"image_name": str(line[3]), "user_id": line[4]})
+
 
 
 def delete_answer(id, question_id):
@@ -246,18 +209,12 @@ def read_answers():
     result = cursor.fetchall()
     return result
 
-##PASSWORD HATCHING
-
-
-def hash_password(plain_text_password):
-    # By using bcrypt, the salt is saved into the hash itself
-    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
-    return hashed_bytes.decode('utf-8')
-
-
-def verify_password(plain_text_password, hashed_password):
-    hashed_bytes_password = hashed_password.encode('utf-8')
-    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+##PASSWORD HASHING
+def get_pw(username):
+    cursor = get_alonescursor()
+    cursor.execute("SELECT password FROM users_info WHERE username=%(username)s", {'username':username})
+    result = cursor.fetchall()
+    return result
 
 
 def read_question_comments():
