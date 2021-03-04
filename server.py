@@ -444,7 +444,8 @@ def accept(answer_id, question_id, user_id):
 
 @app.route("/tags")
 def tags_page():
-    return render_template("tags_page.html")
+    tags = data_manager.tag_counter()
+    return render_template("tags_page.html", tags=tags)
 
 
 if __name__ == "__main__":

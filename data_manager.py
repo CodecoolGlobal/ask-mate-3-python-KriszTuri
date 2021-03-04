@@ -62,7 +62,9 @@ def list_last_5():
 def save_question(line):
     cursor = get_alonescursor()
     cursor.execute("UPDATE users_info SET question_count = question_count + 1 WHERE id = %(id)s ", {"id": line[4]})
-    cursor.execute("INSERT INTO questions (id, view_number, vote_number, title, message_, image_name, user_id) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s, %(user_id)s);", {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3]), "user_id": line[4]})
+    cursor.execute(
+        "INSERT INTO questions (id, view_number, vote_number, title, message_, image_name, user_id) VALUES (%(id)s, 0, 0, %(title)s, %(message)s, %(image_name)s, %(user_id)s);",
+        {"id": line[0], "title": line[1], "message": line[2], "image_name": str(line[3]), "user_id": line[4]})
 
 
 def delete_question(index):
@@ -105,8 +107,9 @@ def save_answers(line):
     print(line)
     cursor = get_alonescursor()
     cursor.execute("UPDATE users_info SET answer_count = answer_count + 1 WHERE id = %(id)s ", {"id": int(line[4])})
-    cursor.execute("INSERT INTO answers (id, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);", {"id": line[0], "question_id": line[1], "message_": line[2],"image_name": str(line[3]), "user_id": line[4]})
-
+    cursor.execute(
+        "INSERT INTO answers (id, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);",
+        {"id": line[0], "question_id": line[1], "message_": line[2], "image_name": str(line[3]), "user_id": line[4]})
 
 
 def delete_answer(id, question_id):
@@ -143,15 +146,17 @@ def get_all_comment(filename):
 def save_comm_que(id, title, question_id, user_id):
     cursor = get_alonescursor()
     cursor.execute("UPDATE users_info SET answer_cout = answer_count + 1 WHERE id = %(user_id)s", {"user_id": user_id})
-    cursor.execute("INSERT INTO comments_questions (id, title, question_id, user_id) VALUES (%(id)s,%(title)s,%(question_id)s, %(user_id)s);",
-    {"id": id, "title": title, "question_id": question_id, "user_id": user_id})
+    cursor.execute(
+        "INSERT INTO comments_questions (id, title, question_id, user_id) VALUES (%(id)s,%(title)s,%(question_id)s, %(user_id)s);",
+        {"id": id, "title": title, "question_id": question_id, "user_id": user_id})
 
 
 def save_comm_ans(id, title, answer_id, user_id):
     cursor = get_alonescursor()
     cursor.execute("UPDATE users_info SET answer_cout = answer_count + 1 WHERE id = %(user_id)s", {"user_id": user_id})
-    cursor.execute("INSERT INTO comments_answers (id, title, answer_id, user_id) VALUES (%(id)s,%(title)s,%(answer_id)s, %(user_id)s);",
-                   {"id": id, "title": title, "answer_id": answer_id, "user_id": user_id})
+    cursor.execute(
+        "INSERT INTO comments_answers (id, title, answer_id, user_id) VALUES (%(id)s,%(title)s,%(answer_id)s, %(user_id)s);",
+        {"id": id, "title": title, "answer_id": answer_id, "user_id": user_id})
 
 
 def del_com(id, filename):
@@ -177,6 +182,7 @@ def save_user(username, email, pw):
         'INSERT INTO users_info(username, email, password, reputation, question_count, answer_count, comment_count) values(%(username)s, %(email)s, %(pw)s, 0, 0, 0, 0);',
         {'username': username, 'email': email, 'pw': pw})
 
+
 def read_user_info():
     cursor = get_alonescursor()
     cursor.execute("SELECT * FROM users_info ")
@@ -193,7 +199,8 @@ def read_reputation(user_id):
 
 def update_reputation(new_reputation, user_id):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE users_info SET reputation = %(new_reputation)s WHERE %(user_id)s = id", {'new_reputation': new_reputation, 'user_id': user_id})
+    cursor.execute("UPDATE users_info SET reputation = %(new_reputation)s WHERE %(user_id)s = id",
+                   {'new_reputation': new_reputation, 'user_id': user_id})
 
 
 def read_questions():
@@ -209,24 +216,27 @@ def read_answers():
     result = cursor.fetchall()
     return result
 
+
 ##PASSWORD HASHING
 def get_pw(username):
     cursor = get_alonescursor()
-    cursor.execute("SELECT password FROM users_info WHERE username=%(username)s", {'username':username})
+    cursor.execute("SELECT password FROM users_info WHERE username=%(username)s", {'username': username})
     result = cursor.fetchall()
     return result
 
 
 def read_question_comments():
     cursor = get_alonescursor()
-    cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_questions.title, comments_questions.user_id FROM questions JOIN comments_questions ON(questions.id = comments_questions.question_id)")
+    cursor.execute(
+        "SELECT questions.user_id AS creater_id, questions.id, comments_questions.title, comments_questions.user_id FROM questions JOIN comments_questions ON(questions.id = comments_questions.question_id)")
     result = cursor.fetchall()
     return result
 
 
 def read_answer_comments():
     cursor = get_alonescursor()
-    cursor.execute("SELECT questions.user_id AS creater_id, questions.id, comments_answers.title, comments_answers.user_id FROM questions JOIN answers ON(questions.id = answers.question_id) JOIN comments_answers ON(answers.id = comments_answers.answer_id)" )
+    cursor.execute(
+        "SELECT questions.user_id AS creater_id, questions.id, comments_answers.title, comments_answers.user_id FROM questions JOIN answers ON(questions.id = answers.question_id) JOIN comments_answers ON(answers.id = comments_answers.answer_id)")
     answer_comments = cursor.fetchall()
     return answer_comments
 
@@ -234,3 +244,11 @@ def read_answer_comments():
 def accept_answer(answer_id):
     cursor = get_alonescursor()
     cursor.execute("UPDATE answers SET accept = TRUE WHERE id = %(answer_id)s", {"answer_id": answer_id})
+
+
+def tag_counter():
+    cursor = get_alonescursor()
+    cursor.execute("SELECT title, COUNT(title) FROM tags GROUP BY title")
+    tags = cursor.fetchall()
+    return tags
+
