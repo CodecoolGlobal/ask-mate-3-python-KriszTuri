@@ -233,4 +233,4 @@ def read_answer_comments():
 
 def accept_answer(answer_id):
     cursor = get_alonescursor()
-    cursor.execute("UPDATE answers SET accept = TRUE WHERE id = %(answer_id)s", {"answer_id": answer_id})
+    cursor.execute("UPDATE answers SET accept = true WHERE id = %(answer_id)s", {"answer_id": answer_id})

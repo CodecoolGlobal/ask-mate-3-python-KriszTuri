@@ -33,8 +33,7 @@
 </table>
 <br><br>
     
-    {%for item in question%}
-        {% if logged_in %}
+    {%for question_item in question%}
             <!--edit, delete-->
             <table style="width: 3cm;">
                 <tr>
@@ -45,41 +44,42 @@
  
                     </td>
                     <td>
+                        
                         <form action="/delete_que/{{ id }}">
                             <input type="submit" class="downvote" value="Delete">
                         </form>
                     </td>
                 </tr>
             </table>
-    {% endif %}
         <!--question, views, votes-->
         <table style="width: 100%;">
                 <tr>
                     <th>
                         <!--question-->
-                        <h1><p>{{item[4]}}</p></h1>
+                        <h1><p>{{question_item[4]}}</p></h1>
                     </th>
 
                 </tr>
                 <tr>
                     <td>
-                        <p>Views: {{item[2]}} Votes: {{3}}</p>
+                        <p>Views: {{question_item[2]}} Votes: {{question[3]}}</p>
                     </td>
                 </tr>
                 <tr>
                     <!--question details-->
                     <td style="text-align: center;">
-                        <p>{{item[5]}}</p>
+                        <p>{{question_item[5]}}</p>
                     </td>
                 </tr>
         </table>
+        {%endfor%}
         <br>
         <br>
         <table style="width: 90%;" class="answers_to_question">
                 <tr>
                     <td>
                         <p><u>Answers:</u></p>
-                        <form action="{{url_for('new_answer', question_id=id, user_id=creater_id)}}" method="POST">
+                        <form action="{{url_for('new_answer', question_id=id, user_id=signed_id)}}" method="POST">
                             {% if logged_in %}
                             <button type="submit" class = "upvote" name="New answer">Send Answer</button>
                             {% endif %}
@@ -103,14 +103,12 @@
                             <input type="text" name="down" value="down" hidden>
                             <button type="submit" name="down" class="downvote">▼</button>
                         </form>
-                            {% if user_id == question[6] and item %}
-                            <form action="{{ url_for('accept', answer_id=item[0], question_id=item[3], user_id=user_id) }}">
-                                <input type="text" name="accept" value="accept" hidden>
-                                <button type="submit" name="accept" class="accept">✓</button>
-
-                            </form>
-                            {%endif%}
                         {% endif %}
+                        {% if signed_id == creater_id | int %}
+                        <form action="/accept/{{ item[0] }}/{{ item[3] }}/{{ creater_id }}">
+                            <button type="submit" name="accept" class="accept">✓</button>
+                        </form>
+                        {%endif%}
                         <p>votes: {{item[2]}}</p>
                     </td>
                     <td>                
@@ -123,10 +121,12 @@
 
                     <td>
                         {% if logged_in %}
+                        {% if item[6] == signed_id%}
                         <!--delete answer-->
                         <form action="{{ url_for('answerdelete', answer_id=item[0], index_of_que=item[3]) }}" method="POST">
                             <button type="submit" class = "downvote">Delete Answer</button>
                         </form>
+                        {% endif %}
                         {% endif %}                          
                     </td>
                 </tr>
@@ -184,6 +184,5 @@
 
         </tr>
     </table>
-        {%endfor%}
     </body>
 </html>
