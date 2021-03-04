@@ -38,7 +38,7 @@
         <table class="signup">
             {% if logged_in  %}
             <tr>
-                <td><p><b>{{username}} / <a href="/logout">Logout</a></b></p></td>
+                <td><p><b><a href="/user/<user_id>">{{username}}</a> / <a href="/logout">Logout</a></b></p></td>
             </tr>
             {% else %}
             <tr>
