@@ -183,8 +183,8 @@ def answerdelete(answer_id, index_of_que):
     return redirect(f"/question/{index_of_que}")
 
 
-@app.route("/add_new_answer/<question_id>/<user_id>/<creater_id>", methods=["POST"])
-def add_new_answer(question_id, user_id, creater_id):
+@app.route("/add_new_answer/<question_id>/<user_id>", methods=["POST"])
+def add_new_answer(question_id, user_id):
     # <!--id;submission_time;vote_number;question_id;message;image-->
     answer = data_manager.get_all_comment("answers") # Itt nem csak a kommenteket lehet megkapni hanem az atributumban szereplő table-ből mindent
     new_answer = []
@@ -205,9 +205,9 @@ def add_new_answer(question_id, user_id, creater_id):
     return redirect(f"/question/{question_id}/{user_id}")
 
 
-@app.route("/new_answer/<question_id>/<user_id>/<creater_id>", methods=["POST"])
-def new_answer(question_id, user_id, creater_id):
-    return render_template("add_new_answer.html", question_id=question_id, user_id=user_id, creater_id=creater_id)
+@app.route("/new_answer/<question_id>/<user_id>/", methods=["POST"])
+def new_answer(question_id, user_id):
+    return render_template("add_new_answer.html", question_id=question_id, user_id=user_id)
 
 
 @app.route("/edit_que/<index_of_que>",  methods=["POST"])
