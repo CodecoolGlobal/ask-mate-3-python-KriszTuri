@@ -24,6 +24,9 @@
                 <td>
                     <b><a href="/">Main Page</a></b>
                 </td>
+                <td>
+                    <a href="/tags">Tags</a>
+                </td>
                      <td>
                     <form action="/like">
                         <button type="submit" class="like_button">Like</button>  <b>{{ likes }}</b>
@@ -34,6 +37,11 @@
 
                   <hr>
           <br>
+      <br>
+      <h1>Our Users</h1>
+      <br>
+      <hr>
+      <br>
         {% if not logged_in %}
         <p>You have no permission, please log in!</p>
       {% elif logged_in %}

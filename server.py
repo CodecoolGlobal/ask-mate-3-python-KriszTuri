@@ -358,7 +358,7 @@ def add_new_tag(id):
     for i in tags:
         id_list.append(i[0])
     if id_list:
-        new_id = max(id_list)+1     
+        new_id = max(id_list)+1
     title = format(request.form["tag"])
     data_manager.give_tag(new_id, title, id)
     return(redirect(f"/edit_question/{id}"))
@@ -434,9 +434,6 @@ def user(user_id):  # original def name user_profile_page
     answers = data_manager.read_answers()
     question_comments = data_manager.read_question_comments()
     answer_comments = data_manager.read_answer_comments()
-    print("\n")
-    print(user_id)
-    print("\n")
     return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
 
 
@@ -448,7 +445,8 @@ def accept(answer_id, question_id, user_id):
 
 @app.route("/tags")
 def tags_page():
-    return render_template("tags_page.html")
+    tags = data_manager.tag_counter()
+    return render_template("tags_page.html", tags=tags)
 
 
 if __name__ == "__main__":

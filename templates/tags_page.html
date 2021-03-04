@@ -2,10 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>Tags Page</title>
 </head>
-<body>
-<h1>Tags</h1>
+<body id="tag_page">
+            <table class="site_header">
+            <tr class="site_header_menu">
+                <td>
+                    <a href="/"><img class="site_logo" src="{{url_for('static', filename='logo_outline.png')}}" alt="logo"></a>
+                </td>
+                <td>
+                    <b><a href="/about">About</a></b>
+                </td>
+                <td>
+                    <b><a href="/list">Questions</a></b>
+                </td>
+                <td>
+                    <b><a href="/contact">Contact Us</a></b>
+                </td>
+                <td>
+                    <b><a href="/users">Our Users</a></b>
+                </td>
+            <td>
+                <a href="/tags">Tags</a>
+            </td>
+
+                <td>
+                    <form action="/like">
+                        <button type="submit" class="like_button">Like</button>  {% block likes %}<b>{{ likes }}</b>{% endblock %}
+                    </form>
+                </td>
+            </tr>
+        </table>
+            <hr>
+            <br>
+    <h1>Tags</h1>
+    <br>
+    <hr>
+    <br>
+    <table width="60%">
+        <tr>
+            <th><h2>Tag</h2></th>
+            <th><h2>Question Number</h2></th
+        </tr>
+        {% for t in tags %}
+        <tr>
+            <td class="tags" style="text-align: center" >
+                {{ t[0] }}
+            </td>
+            <td  style="text-align: center">
+                {{ t[1] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 
 </body>
 </html>
