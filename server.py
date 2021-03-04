@@ -441,6 +441,9 @@ def user(user_id):  # original def name user_profile_page
 
 @app.route("/accept/<answer_id>/<question_id>/<user_id>")
 def accept(answer_id, question_id, user_id):
+    reputation_to_accept = data_manager.read_reputation_and_to_answer_accept(question_id, answer_id)
+    new_reputation = int(reputation_to_accept[0][0]) + 15
+    data_manager.update_reputation(new_reputation, reputation_to_accept[0][1])
     accept_answer(answer_id)
     return redirect(f"/question/{question_id}/{user_id}")
 
