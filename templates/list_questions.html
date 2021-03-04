@@ -43,6 +43,7 @@
         <p>If you'd like to, you can sort them by title, submission time, message, or the number of views and votes!</p>
         <table style="border: 1; width: 100%;">
             <th>
+                {% if logged_in %}
                 <form action="{{url_for('sort_list')}}", method="GET">
                     <!--title, submission time, message number of views number of votes-->
                     <label for="Sorting">Sort by: </label>
@@ -55,6 +56,7 @@
                     </select>
                     <button type="submit" >Submit</button>
                 </form>
+                {%endif%}
             </th> <!-- place  to sorting and add new question-->
             <th>Submission time</th>
             <th>Views</th>
