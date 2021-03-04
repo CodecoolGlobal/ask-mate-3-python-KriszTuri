@@ -15,8 +15,11 @@ def list_questions(sorted='vote_number', sort='DESC'):
     tags = data_manager.get_all_comment("tags")
     user_id = 8721544
     if session:
+        logged_in = True
         user_id = session["user_id"]
-    return render_template("list_questions.html", questions=questions, tags=tags, user_id=user_id)
+    else:
+        logged_in = False
+    return render_template("list_questions.html", logged_in=logged_in, questions=questions, tags=tags, user_id=user_id)
 
 
 @app.route("/about")
