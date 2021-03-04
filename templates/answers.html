@@ -77,7 +77,7 @@
                 <tr>
                     <td>
                         <p><u>Answers:</u></p>
-                        <form action="{{url_for('new_answer', question_id=id, user_id=user_id)}}" method="POST">
+                        <form action="{{url_for('new_answer', question_id=id, user_id=signed_id, creater_id=creater_id)}}" method="POST">
                             <button type="submit" class = "upvote" name="New answer">Send Answer</button>
                         </form>
                         {%for item in answers%}

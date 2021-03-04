@@ -30,12 +30,9 @@ def question_write(index_of_que, user_id):
     question = data_manager.get_que(index_of_que)
     question_comments = data_manager.get_all_comment("comments_questions")
     answers = data_manager.get_all_answers(index_of_que)
-    print("\n")
-    print(answers)
-    print("\n")
     answer_comments = data_manager.get_all_comment("comments_answers")
-    # user_id = session['id'] # itt kéne ez a cucc, de 
-    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
+    signed_id = 1 #session['id'] # itt kéne ez a cucc, de
+    return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
@@ -186,8 +183,8 @@ def answerdelete(answer_id, index_of_que):
     return redirect(f"/question/{index_of_que}")
 
 
-@app.route("/add_new_answer/<question_id>/<user_id>", methods=["POST"])
-def add_new_answer(question_id, user_id):
+@app.route("/add_new_answer/<question_id>/<user_id>/<creater_id>", methods=["POST"])
+def add_new_answer(question_id, user_id, creater_id):
     # <!--id;submission_time;vote_number;question_id;message;image-->
     answer = data_manager.get_all_comment("answers") # Itt nem csak a kommenteket lehet megkapni hanem az atributumban szereplő table-ből mindent
     new_answer = []
@@ -199,22 +196,18 @@ def add_new_answer(question_id, user_id):
             answer_indexes.append(int(answer[index][0]))
         new_id = max(answer_indexes) + 1
     new_answer.append(str(new_id))
-    # date saver to implement
-    new_answer.append(str(date))
-    # view_number
-    # new_answer.append(str(0))
     # vote_number
     new_answer.append(str(question_id))
     new_answer.append(answer_message)
     new_answer.append("")
     new_answer.append(user_id)
     data_manager.save_answers(new_answer)
-    return redirect(f"/question/{question_id}")
+    return redirect(f"/question/{question_id}/{creater_id}")
 
 
-@app.route("/new_answer/<question_id>/<user_id>", methods=["POST"])
-def new_answer(question_id, user_id):
-    return render_template("add_new_answer.html", question_id=question_id, user_id=user_id)
+@app.route("/new_answer/<question_id>/<user_id>/<creater_id>", methods=["POST"])
+def new_answer(question_id, user_id, creater_id):
+    return render_template("add_new_answer.html", question_id=question_id, user_id=user_id, creater_id=creater_id)
 
 
 @app.route("/edit_que/<index_of_que>",  methods=["POST"])
@@ -446,6 +439,11 @@ def user(user_id):  # original def name user_profile_page
 def accept(answer_id, question_id, user_id):
     accept_answer(answer_id)
     return redirect(f"/question/{question_id}/{user_id}")
+
+
+@app.route("/tags")
+def tags_page():
+    return render_template("tags_page.html")
 
 
 if __name__ == "__main__":

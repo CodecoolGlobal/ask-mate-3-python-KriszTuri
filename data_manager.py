@@ -104,7 +104,7 @@ def get_search_ans(search):
 def save_answers(line):
     cursor = get_alonescursor()
     cursor.execute("UPDATE users_info SET answer_count = answer_count + 1 WHERE id = %(id)s ", {"id": line[4]})
-    cursor.execute("INSERT INTO answers (id, sub_time, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, %(submission_time)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);", {"id": line[0], "submission_time": line[1], "question_id": line[2], "message_": line[3],"image_name": str(line[4]), "user_id": line[4]})
+    cursor.execute("INSERT INTO answers (id, vote_number, question_id, message_, image_name, user_id) VALUES (%(id)s, 0, %(question_id)s, %(message_)s, %(image_name)s, %(user_id)s);", {"id": line[0], "question_id": line[1], "message_": line[2],"image_name": str(line[3]), "user_id": line[4]})
 
 
 def delete_answer(id, question_id):
