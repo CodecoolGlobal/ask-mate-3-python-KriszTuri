@@ -46,6 +46,9 @@ def question_write(index_of_que, user_id):
     question = get_que(index_of_que)
     question_comments = get_all_comment("comments_questions")
     answers = get_all_answers(index_of_que)
+    print("\n")
+    print(answers)
+    print("\n")
     answer_comments = get_all_comment("comments_answers")
     # user_id = session['id'] # itt kéne ez a cucc, de 
     return render_template("answers.html", answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id)
@@ -142,6 +145,7 @@ def like_button():
 def render_main_page():
     username = ""
     print(session)
+    user_id = 13413134314141241231232131231253531213123123
     if session:
         logged_in = True
         username = session["username"]
