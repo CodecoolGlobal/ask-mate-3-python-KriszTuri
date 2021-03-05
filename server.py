@@ -13,34 +13,43 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def list_questions(sorted='vote_number', sort='DESC'):
     questions = data_manager.get_all(sorted, sort)
     tags = data_manager.get_all_comment("tags")
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     user_id = 0
-    logged_in = False
     username= ""
     if session:
         logged_in = True
         user_id = session["user_id"]
         username= session["username"]
-    return render_template("list_questions.html", logged_in=logged_in, questions=questions, tags=tags, user_id=user_id, username=username)
+
+    else:
+        logged_in=False
+    return render_template("list_questions.html", logged_in=logged_in, questions=questions, tags=tags, user_id=user_id, username=username,likes=like_number)
 
 
 @app.route("/about")
 def about_page():
-    logged_in = False
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     username= ""
     if session:
         logged_in = True
         username = session["username"]
-    return render_template("about.html", logged_in=logged_in, username=username)
+
+    else:
+        logged_in = False
+    return render_template("about.html",likes=like_number, logged_in=logged_in, username=username)
 
 
 @app.route("/question/<index_of_que>/<user_id>", methods=['GET', 'POST'])
 def question_write(index_of_que, user_id):
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     data_manager.view_num_add(index_of_que)
     question = data_manager.get_que(index_of_que)
     question_comments = data_manager.get_all_comment("comments_questions")
     answers = data_manager.get_all_answers(index_of_que)
     answer_comments = data_manager.get_all_comment("comments_answers")  # session['id'] # itt kéne ez a cucc, de
-    logged_in = False
     username= ""
     if session:
         logged_in = True
@@ -49,7 +58,7 @@ def question_write(index_of_que, user_id):
     else:
         logged_in = False
         signed_id = 0
-    return render_template("answers.html", username=username, logged_in=logged_in, answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
+    return render_template("answers.html",likes=like_number, username=username, logged_in=logged_in, answers=answers, question=question, id=index_of_que, question_comments=question_comments, answer_comments=answer_comments, creater_id=user_id, signed_id=signed_id)
 
 
 @app.route("/vote_answer/<int:answer_id>/<question_id>/<int:user_id>/<int:creater_id>", methods=["GET", "POST"])
@@ -123,7 +132,9 @@ def sort_list():
 
 @app.route("/add-question/<user_id>", methods=["GET"])
 def new_question_page_render(user_id):
-    return render_template("add_new_question.html", user_id=user_id)
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    return render_template("add_new_question.html", likes=like_number, user_id=user_id)
 
 
 @app.route("/like")
@@ -159,13 +170,16 @@ def render_main_page():
 
 @app.route("/edit_question/<question_id>", methods=["GET", "POST"])
 def edit_question(question_id):
-    logged_in = False
     username= ""
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     if session:
         logged_in = True
         username = session["username"]
+    else:
+        logged_in = False
     question = data_manager.get_que(question_id)
-    return render_template("edit_question.html", id=question_id, question=question, username=username, logged_in=logged_in)
+    return render_template("edit_question.html", likes=like_number, id=question_id, question=question, username=username, logged_in=logged_in)
 
 
 # submit new question
@@ -229,7 +243,9 @@ def add_new_answer(question_id, user_id):
 
 @app.route("/new_answer/<question_id>/<user_id>/", methods=["POST"])
 def new_answer(question_id, user_id):
-    return render_template("add_new_answer.html", question_id=question_id, user_id=user_id)
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    return render_template("add_new_answer.html",likes=like_number, question_id=question_id, user_id=user_id)
 
 
 @app.route("/edit_que/<index_of_que>",  methods=["POST"])
@@ -253,6 +269,13 @@ def search_input():
     list_of_a_id = []
     userinput = request.args.get('userinput')
     questions_contain = data_manager.get_search_que(userinput)
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
+    if session:
+        logged_in = True
+    else: 
+        logged_in = False
     for line in questions_contain:
         list_of_q_id.append(line[0])
     answer_contain = data_manager.get_search_ans(userinput)
@@ -266,17 +289,20 @@ def search_input():
         questions_contain[i] = list(questions_contain[i])
     for i in range(len(answer_contain)):
         answer_contain[i] = list(answer_contain[i])
-    return render_template('search.html', userinput=userinput, questions=questions_contain, answers=answer_contain)
+    return render_template('search.html',username=username,likes=like_number, logged_in = logged_in, userinput=userinput, questions=questions_contain, answers=answer_contain)
 
 
 @app.route("/contact")
 def render_contact_page():
-    logged_in = False
     username= ""
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     if session:
         logged_in = True
         username = session["username"]
-    return render_template("contact_us.html", logged_in=logged_in, username=username)
+    else:
+        logged_in= False
+    return render_template("contact_us.html", likes=like_number,logged_in=logged_in, username=username)
 
 
 @app.route("/delete_tag/<id>")
@@ -287,7 +313,15 @@ def delete_tag(id):
 
 @app.route("/new_comment_question/<question_id>/<user_id>")
 def new_comment_question(question_id, user_id):
-    return render_template("new_comment_question.html", question_id=question_id, user_id=user_id)
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in= False
+    return render_template("new_comment_question.html",likes=like_number,logged_in=logged_in, username=username, question_id=question_id, user_id=user_id)
 
 
 @app.route("/save_comment/<question_id>/<user_id>", methods=["POST"])
@@ -306,7 +340,15 @@ def save_comment_question(question_id, user_id):
 
 @app.route("/new_comment_answer/<answer_id>/<user_id>")
 def new_comment_answer(answer_id, user_id):
-    return render_template("new_comment_answer.html", answer_id=answer_id, user_id=user_id)
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in= False
+    return render_template("new_comment_answer.html",likes=like_number,logged_in=logged_in, username=username, answer_id=answer_id, user_id=user_id)
 
 
 @app.route("/save_comm_answr/<answer_id>/<user_id>", methods=["POST"])
@@ -337,12 +379,20 @@ def del_com_ans(id):
 
 @app.route("/edit_comment_answer/<id>")
 def edit_comment_answer(id):
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in= False
     answer = ""
     answers = data_manager.get_all_comment("comments_answers")
     for i in answers:
         if str(i[0]) == id:
             answer = i
-    return render_template("edit_com_a.html", answer=answer)
+    return render_template("edit_com_a.html",likes=like_number,logged_in=logged_in, username=username, answer=answer)
 
 
 @app.route("/edit_anser_com_save/<id>", methods=["POST"])
@@ -354,12 +404,20 @@ def edit_anser_com_save(id):
 
 @app.route("/edit_comment_question/<id>")
 def edit_comment_question(id):
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in= False
     question = ""
     questions = data_manager.get_all_comment("comments_questions")
     for i in questions:
         if str(i[0]) == id:
             question = i
-    return render_template("edit_com_q.html", question=question)
+    return render_template("edit_com_q.html",likes=like_number,logged_in=logged_in, username=username, question=question)
 
 
 @app.route("/edit_quest_com_save/<id>", methods=["POST"])
@@ -387,6 +445,8 @@ def add_new_tag(id):
 def registration():
     users = data_manager.read_user_info()
     message = ""
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     if request.method == "POST":
         username = request.form["new_user"]
         email = request.form["new_email"] 
@@ -398,7 +458,7 @@ def registration():
             save_user(username,email,password)
         else:
             message = "Username or email already taken!"
-    return render_template("reg.html", message = message)
+    return render_template("reg.html",likes=like_number, message = message)
 
 
 @app.route('/logout')
@@ -411,6 +471,9 @@ def logout():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
     if request.method == "GET":
         return render_template("login.html")
     if request.method == "POST":
@@ -437,29 +500,41 @@ def login():
                 message = "Incorrect username or password!"
         else:
             message = "User does not exist!"
-        return render_template("login.html", message=message)
+        return render_template("login.html",likes=like_number, message=message)
 
 
 @app.route("/users")
 def list_users():
     users = data_manager.read_user_info()
-    logged_in = False
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     username= ""
     if session:
         logged_in = True
         username = session["username"]
-    return render_template("users_list.html", users=users, logged_in=logged_in,username=username)
+
+    else:
+        logged_in = False
+    return render_template("users_list.html", likes=like_number, users=users, logged_in=logged_in,username=username)
 
 
 @app.route("/user/<user_id>")
 def user(user_id):  # original def name user_profile_page
     # User Profile Page
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
+    username = ""
+    if session:
+        logged_in = True
+        username = session["username"]
+    else:
+        logged_in= False
     questions = data_manager.read_questions()
     users = data_manager.read_user_info()
     answers = data_manager.read_answers()
     question_comments = data_manager.read_question_comments()
     answer_comments = data_manager.read_answer_comments()
-    return render_template("profile_page.html", id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
+    return render_template("profile_page.html", username=username,likes=like_number, logged_in=logged_in, id=int(user_id), users=users, questions=questions, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
 
 
 @app.route("/accept/<answer_id>/<question_id>/<user_id>")
@@ -473,13 +548,16 @@ def accept(answer_id, question_id, user_id):
 
 @app.route("/tags")
 def tags_page():
-    logged_in = False
+    like_data_file = open("sample_data/site_likes.txt", "r")
+    like_number = like_data_file.read()
     username= ""
     if session:
         logged_in = True
         username = session["username"]
+    else:
+        logged_in = False
     tags = data_manager.tag_counter()
-    return render_template("tags_page.html", tags=tags, logged_in=logged_in, username=username)
+    return render_template("tags_page.html",likes=like_number, tags=tags, logged_in=logged_in, username=username)
 
 
 if __name__ == "__main__":
