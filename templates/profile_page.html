@@ -44,6 +44,8 @@
                             <img class="profile_picture" src="/static/Ruby.jpg" alt="profile picture" width="12%" height="Auto">
                             {% elif data[1] == 'Pici'  %}
                              <img class="profile_picture" src="/static/Pici.jpg" alt="profile picture" width="12%" height="Auto">
+                             {% elif data[1] == 'Szecsi'  %}
+                             <img class="profile_picture" src="/static/Szecsi.jpg" alt="profile picture" width="12%" height="Auto">
                             {% else %}
                         <img class="profile_picture" src="/static/profile_picture.jpg" alt="profile picture" width="10%" height="Auto">
                             {% endif %}
@@ -61,10 +63,10 @@
                <br>
         <hr>
         <br>
-<table class="center">
+<table class="center" style="width: 70%;">
     <tr>
-        <th><h3>Q title</h3></th>
-        <th><h2>Question</h2></th>
+        <th><h3>Question title</h3></th>
+        <th><h2>Question Details</h2></th>
     </tr>
     <tr>
       {% for q in questions %}
@@ -80,10 +82,10 @@
                <br>
         <hr>
         <br>
-           <table class="center">
+           <table class="center" style="width: 70%;">
 
                <tr>
-                   <th><h2>Answer</h2></th>
+                   <th><h2>Answers</h2></th>
                 </tr>
 
       {% for a in answers %}
